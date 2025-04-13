@@ -1,0 +1,46 @@
+*{
+    font-family: farsi !important;
+}
+
+#header {
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+    height: 50px;
+
+}
+div.breadcrumbs{
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+    color: white;
+    font-size: 1rem !important;
+}
+
+#branding h1{
+    color: white;
+    font-family: farsi;
+}
+#user-tools{
+    font-size: 1rem;
+}
+
+.module h2, .module caption, .inline-group h2{
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+}
+.vIntegerField{
+    width: 20em !important;
+}
+
+.field-seperated_card{
+    direction: ltr;
+}
+
+a:link, a:visited{
+    color: var(--body-loud-color)
+}

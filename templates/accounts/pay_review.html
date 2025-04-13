@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}پروفایل{% endblock title %}
+
+{% block content %}
+<main class="main">
+  <!-- Breadcrumb Start -->
+  {% include "partials/_breadcrumb.html" %}
+  <!-- Breadcrumb End -->
+
+  <!-- Dashboard Start -->
+  <section class="user-dashboard">
+    <div class="container-lg">
+      <div class="row g-3 g-xl-4 tab-wrap">
+     
+
+        <div class="col-lg-8 mx-auto">
+          <div class="right-content tab-content" id="myTabContent">
+            <!-- Profile Tabs Start -->
+
+            <div class="btn-style2 bg-theme-orange2 border-dark w-50">
+              <h3>پروفایل</h3>
+            </div>
+            <div class="profile mt-5 pt-2">
+              {% include 'partials/_alerts.html' %}
+
+              <div class="custom-form form-pill">
+                 
+                <div class="row g-3 g-xl-4">
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="fullname">نام</label>
+                      <input type="text" class=" mr-sm-2 form-control" id="name" disabled value="{{request.user.first_name}}">
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="fullname">نام خانوادگی</label>
+                      <input type="text" class=" mr-sm-2 form-control" id="name" disabled value="{{request.user.last_name}}">
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="mobile">تلفن همراه</label>
+                      <input type="text" class=" mr-sm-2 form-control" id="phone" disabled value="{{request.user.phone_number}}">
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="id_code_meli">شماره ملی</label>
+                      <input type="text" class=" mr-sm-2 form-control" id="id_code_meli" disabled value="{{request.user.account.code_meli}}">
+                      
+                    </div>
+                </div>
+                
+                
+                <div class="col-sm-4">
+                    <div class="input-box">
+                        <label for="id_email">ایمیل</label>
+                        <input type="text" class=" mr-sm-2 form-control" id="id_email" disabled value="{{request.user.account.email}}">
+                    </div>
+                </div>
+                
+                <div class="col-sm-4">
+                    <div class="input-box">
+                        <label for="id_phone">تلفن ثابت (با کد شهر)</label>
+                        <input type="text" class=" mr-sm-2 form-control" id="id_phone" disabled value="{{request.user.account.phone}}">
+                    </div>
+                </div>
+                
+                
+                
+                <div class="col-sm-4">
+                    <div class="input-box">
+                        <label for="id_gender">جنسیت</label>
+                        <input type="text" class=" mr-sm-2 form-control" id="id_gender" disabled value="{{request.user.account.get_gender_display}}">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="input-box">
+                        <label for="id_chtype">شخصیت</label>
+                        {{form.chtype}}
+                        <input type="text" class=" mr-sm-2 form-control" id="id_chtype" disabled value="{{request.user.account.get_chtype_display}}">
+                    </div>
+                </div>
+                
+                <div class="col-sm-4">
+                    <div class="input-box">
+                        <label for="location">استان</label>
+                        <input type="text" class=" mr-sm-2 form-control" id="location" disabled value="{{request.user.account.province}}">
+                        
+                    </div>
+                </div>
+                
+                <div class="col-sm-4">
+                    <div class="input-box" data-url="{% url 'city_list' %}" id="cityData">
+                        <label for="city">شهر</label>
+                        <input type="text" class=" mr-sm-2 form-control" id="city" disabled value="{{request.user.account.city}}">
+                    </div>
+                </div>
+                
+                <div class="col-sm-4">
+                    <div class="input-box">
+                        <label for="id_postal_code">کد پستی</label>
+                        <input type="text" class=" mr-sm-2 form-control" id="id_postal_code" disabled value="{{request.user.account.postal_code}}">
+                    </div>
+                </div>
+
+                
+                  <div class="col-sm-4">
+                      <div class="input-box">
+                          <label for="id_jalali_birth">تاریخ تولد</label>
+                          <input type="text" class=" mr-sm-2 form-control" id="id_jalali_birth" disabled value="{{request.user.account.jalali_birth}}">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="input-box">
+                            <label for="id_father_name">نام پدر</label>
+                            <input type="text" class=" mr-sm-2 form-control" id="id_father_name" disabled value="{{request.user.account.father_name}}">
+                    </div>
+                  </div>
+
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="loan-type-select">مبلغ وام</label>
+                      <input type="text" class=" mr-sm-2 form-control" id="loan-type-select" disabled value="{{request.user.account.loan_type|intcomma:False}} تومان">
+                   
+                    </div>
+                  </div>
+
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="return-period-select">دوره پرداخت</label>
+                      <input type="text" class=" mr-sm-2 form-control" id="return-period-select" disabled value="{{request.user.account.return_period}} ماه">
+
+                    </div>
+                  </div>
+
+
+
+                  <div class="col-sm-12">
+                    <div class="input-box">
+                      <label for="address2">آدرس</label>
+                      <input type="text" class=" mr-sm-2 form-control" id="address2" disabled value="{{request.user.account.address}}">
+                 
+                    </div>
+                  </div>
+
+
+            
+
+                </div>
+
+                <div class="btn-box">
+                    <a href="{% url 'pay_fee' %}" class="btn btn-success btn-lg">
+                        پرداخت فیش
+                    </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Profile Tabs End -->
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Dashboard End -->
+</main>
+
+
+
+{% endblock content %}

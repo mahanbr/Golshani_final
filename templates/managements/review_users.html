@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}مدیریت{% endblock title %}
+
+{% block content %}
+<main class="main">
+  <!-- Breadcrumb Start -->
+  {% include "partials/_breadcrumb.html" %}
+
+  <!-- Breadcrumb End -->
+
+  <!-- Dashboard Start -->
+  <section class="user-dashboard">
+    <div class="container-lg">
+      <div class="row g-3 g-xl-4 tab-wrap">
+
+        {% comment %} {% include "partials/_admin_menu.html" %} {% endcomment %}
+
+
+
+        <div class="col-11 mx-auto">
+          <div class="right-content tab-content" id="myTabContent">
+            <form method="GET" action="" class="custom-form form-pill mb-3">
+              <div class="row g-3 g-xl-4">
+                  <div class="col-sm-5">
+                      <div class="input-box">
+                          <label for="query">نام کاربر:</label>
+                          <input type="text" id="query" name="query" class=" mr-sm-2 form-control"
+                              placeholder="نام و نام خانوادگی" value="{{ request.GET.query }}">
+                      </div>
+                  </div>
+                  <div class="col-sm-5">
+                      <div class="input-box">
+                          <label for="phone">شماره تماس:</label>
+                          <input type="text" id="phone" name="phone" class=" mr-sm-2 form-control" placeholder="شماره تماس" value="{{ request.GET.amount }}">
+                      </div>
+                  </div>
+ 
+                 <button class="btn btn-secondary " type="submit">جست و جو</button>
+                     
+               
+              </div>
+ 
+          </form>
+
+            <div class="btn-style2 bg-theme-orange2 border-dark w-50">
+                <h3>بررسی کاربران</h3>
+            </div>
+
+              <div class="table-responsive mt-3 ">
+                <table class="table table-bordered table-striped text-center ">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">نام و نام خانوادگی</th>
+                            <th scope="col">شماره تماس</th>
+                            <th scope="col">پرداخت ها</th>
+                            <th scope="col">وام درخواستی</th>
+                            <th scope="col">دوره باز پرداخت</th>
+                            <th scope="col">تاریخ عضویت</th>
+                            <th scope="col">مرحله عضویت</th>
+                            <th scope="col">پرداخت موفقیت آمیز</th>
+        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for account in accounts %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td> <a href="{%url 'user_info' pk=user.pk %}" class="text-decoration-underline"> {{account.user.get_full_name}}</a>
+                            </td>
+                            <td>{{account.user.phone_number}}</td>
+                            <td>
+                              <a href="{%url 'user_payment_check' pk=user.pk %}" class="text-decoration-underline">
+                                بررسی
+                              </a>
+                            </td>
+                            <td>{{account.loan_type|intcomma:False}} تومان</td>
+                            <td>{{account.return_period}} ماه</td>
+                            <td class="pdate">{{account.user.date_joined|date:"m/d/Y"}}</td>
+                            <td>{{account.get_status_display}}</td>
+                           
+                              {% if account.successful_payments %}
+                              <td class="text-success">پرداخت موفق</td>
+                              {% else %}
+                              <td class="text-danger">پرداخت ناموفق</td>
+                              {% endif %}
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+              </div>
+         
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Dashboard End -->
+</main>
+{% endblock content %}

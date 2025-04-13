@@ -1,0 +1,123 @@
+{% load static %}
+<div class="breadcrumb-wrap">
+    <div class="banner element-background" style="
+    background-image: url({% static 'img/brad.jpg' %});
+    background-size: cover;
+    ">
+
+        <div class="container-lg">
+            <div class="breadcrumb-box">
+                <div class="heading-box">
+          
+
+                    {% if 'product' in request.path %}
+                    <h1>{{ product.name }}</h1>
+                    {% elif 'category' in request.path %}
+                    {% if category %}
+                    <h1>
+                        {{ category.name }}
+                    </h1>
+                    {% else %}
+                    <h1>محصولات</h1>
+                    {% endif %}
+                    {% elif 'account' in request.path %}
+                    {% if 'dashboard' in request.path %}
+                    <h1>داشبورد</h1>
+                    {% elif 'profile' in request.path %}
+                    <h1>پروفایل</h1>
+                    {% elif 'orders-history' in request.path %}
+                    <h1>سفارشات</h1>
+                    {% elif 'wishlist' in request.path %}
+                    <h1>علاقه مندی ها</h1>
+                    {% endif %}
+                    {% elif 'blog' in request.path %}
+                    {% if 'hashtags' in request.path %}
+                    <h1>{{name}}</h1>
+                    {% elif 'posts' in request.path %}
+                    <h1>{{post.title}}</h1>
+                    {% else %}
+                    <h1>مجله</h1>
+                    {% endif %}
+                    {% elif 'nikan-manager' in request.path %}
+                    <h1>مدیریت</h1>
+                    {% elif 'about' in request.path %}
+                    <h1>درباره ما</h1>
+                    {% elif 'contact-us' in request.path %}
+                    <h1>تماس با ما</h1>
+                    {% elif 'incredible-offers' in request.path %}
+                    <h1>محصولات با تخفیف ویژه</h1>
+                    {% elif 'faqs' in request.path %}
+                    <h1>سوالات متداول</h1>
+                    {% elif 'order' in request.path %}
+                        {% if 'cart' in request.path %}
+                            <h1>سبد خرید</h1>
+                        {% elif 'checkout' in request.path %}
+                            <h1>بررسی سفارش</h1>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                <ol class="breadcrumb">
+                    <li><a href="{% url 'index' %}">خانه</a></li>
+
+                    {% if 'product' in request.path or 'category' in request.path  %}
+                    {% if '/category/' in request.path %}
+                    <li><a class="current" href="#">محصولات</a></li>
+                    {% else %}
+                    <li><a href="{% url 'category' %}">محصولات</a></li>
+                    <li><a href="{{product.category.get_absolute_url}}">{{product.category.name}}</a></li>
+                    {% endif %}
+                    {% elif 'account' in request.path %}
+                    <li><a href="{% url 'dashboard' %}">حساب کاربری</a></li>
+                    {% elif 'blog' in request.path %}
+                    {% if '/blog/' == request.path %}
+                    <li><a class="current" href="#">مجله</a></li>
+                    {% else %}
+                    <li><a href="{% url 'blog' %}">مجله</a></li>
+                    {% endif %}
+                    {% elif 'nikan-manager' in request.path %}
+                    <li><a href="{% url 'manager_index' %}">مدیریت</a></li>
+                    {% elif 'order' in request.path %}
+                    {% if 'cart' in request.path %}
+                    <li><a href="#">سبد خرید</a></li>
+                    {% elif 'checkout' in request.path %}
+                    <li><a href="#">بررسی سفارش</a></li>
+                    {% endif %}
+                    {%endif%}
+
+
+
+                    {% if 'product' in request.path  %}
+                        <li class="current">{{product.name}}</li>
+                    {% elif category %}
+                        <li class="current">{{category.name}}</li>
+                    {% elif 'account' in request.path %}
+                        {% if 'dashboard' in request.path %}
+                        <li class="current">داشبورد</li>
+                        {% elif 'profile' in request.path %}
+                        <li class="current">پروفایل</li>
+                        {% elif 'orders-history' in request.path %}
+                        <li class="current">سفارشات من</li>
+                        {% elif 'wishlist' in request.path %}
+                        <li class="current">علاقه مندی ها</li>
+                        {% endif %}
+                    {% elif 'posts' in request.path %}
+                    <li class="current">{{post.title}}</li>
+                    {% elif 'hashtags' in request.path %}
+                    <li class="current">{{name}}</li>
+                    {% elif 'contact-us' in request.path %}
+                    <li class="current">تماس با ما</li>
+                    {% elif 'incredible-offers' in request.path %}
+                    <li class="current">تخفیفات</li>
+                    {% elif 'faqs' in request.path %}
+                    <li class="current">سوالات متداول</li>
+                    {% elif 'about' in request.path %}
+                    <li class="current">درباره ما</li>
+                    {%endif%}
+
+
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}پروفایل{% endblock title %}
+ 
+{% block content %}
+<main class="main">
+  <!-- Breadcrumb Start -->
+  {% include "partials/_breadcrumb.html" %}
+  <!-- Breadcrumb End -->
+
+  <!-- Dashboard Start -->
+  <section class="user-dashboard">
+    <div class="container-lg">
+      <div class="row g-3 g-xl-4 tab-wrap">
+
+
+        <div class="col-lg-8 mx-auto">
+          <div class="right-content tab-content" id="myTabContent">
+            <!-- Profile Tabs Start -->
+
+            <div class="btn-style2 bg-theme-orange2 border-dark w-50">
+              <h3>پروفایل</h3>
+            </div>
+            <div class="profile mt-5 pt-2">
+              {% include 'partials/_alerts.html' %}
+
+              <form method="post" class="custom-form form-pill" id="profileForm">
+                {% csrf_token %}
+                <div class="row g-3 g-xl-4">
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="fullname">نام</label>
+                      <input type="text" class=" mr-sm-2 form-control" id="name" disabled value="{{request.user.first_name}}">
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="fullname">نام خانوادگی</label>
+                      <input type="text" class=" mr-sm-2 form-control" id="name" disabled value="{{request.user.last_name}}">
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="mobile">تلفن همراه</label>
+                      <input type="text" class=" mr-sm-2 form-control" id="phone" disabled value="{{request.user.phone_number}}">
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="id_code_meli">شماره ملی (دلخواه)</label>
+                      {{form.code_meli}}
+                    </div>
+                  </div>
+
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="id_email">ایمیل</label>
+                      {{form.email}}
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="id_phone">تلفن ثابت (با کد شهر)</label>
+                      {{form.phone}}
+                    </div>
+                  </div>
+
+
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="id_gender">جنسیت</label>
+                      {{form.gender}}
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="id_gender">شخصیت</label>
+                      {{form.chtype}}
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="location">استان</label>
+                      <select name="id_province" id="id_province" class="form-control form-select" required>
+                        {% for key, value in provinces.items  %}
+                        <option value="{{key}}" {% if request.user.account.province == value %} selected {%endif%}>
+                          {{value}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="input-box" data-url="{% url 'city_list' %}" id="cityData">
+                      <label for="location">شهر</label>
+                      <select name="id_city" id="id_city" class="form-control form-select" required>
+                        {% for city in cities %}
+                        <option value="{{city.id}}" {% if request.user.account.city == city.name %} selected
+                          {%endif%}>{{city.name}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="id_postal_code">کد پستی</label>
+                      {{form.postal_code}}
+                    </div>
+                  </div>
+
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="id_jalali_birth">تاریخ تولد</label>
+                      {{form.jalali_birth}}
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="id_father_name">نام پدر</label>
+                      {{form.father_name}}
+                    </div>
+                  </div>
+
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="loan-type-select">مبلغ وام</label>
+                      <select name="loan-type-select" id="loan-type-select" class="form-control form-select" required>
+                        <option value="0">-----------</option>
+                        {% for item in loan_types  %}
+                        {% for key, value in item.items  %}
+                        <option value="{{key}}" >
+                          {{value|intcomma:False}} تومان</option>
+                        {% endfor %}
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+
+
+                  <div class="col-sm-4">
+                    <div class="input-box">
+                      <label for="return-period-select">دوره پرداخت</label>
+                      <select name="return-period-select" required id="return-period-select" class="form-control form-select"></select>
+                    </div>
+                  </div>
+
+
+
+                  <div class="col-sm-8">
+                    <div class="input-box">
+                      <label for="address2">آدرس</label>
+                      {{form.address}}
+                    </div>
+                  </div>
+
+
+                  <div class=" col-sm-8">
+                    <p> <i class="bi bi-exclamation-diamond-fill text-danger"></i> لطفا آدرس را با ذکر استان و شهر و پلاک
+                      به صورت دقیق وارد نمایید.</p>
+                    <p> <i class="bi bi-exclamation-diamond-fill text-danger"></i> در ثبت کد پستی نهایت دقت را به عمل
+                      آورید.</p>
+                    <p> <i class="bi bi-exclamation-diamond-fill text-danger"></i> مسئولیت ثبت هر گونه اطلاعات اشتباه با
+                      شخص کاربر می باشد.</p>
+                  </div>
+
+                </div>
+
+                <div class="btn-box">
+                  <button  class="btn-solid btn btn-primary px-3 btn-lg" id="save">ذخیره </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Profile Tabs End -->
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Dashboard End -->
+</main>
+
+
+
+<script>
+
+
+  
+  jalaliDatepicker.startWatch({
+    maxDate: "today",
+    showTodayBtn: false,
+    showEmptyBtn: false,
+
+  });
+
+  document.getElementById('save').addEventListener('click',function(e){
+    e.preventDefault()
+    const form = document.getElementById('profileForm');
+    let isValid = true;
+    const requiredFields = form.querySelectorAll('[required]')
+    requiredFields.forEach(field => {
+      if (!field.value.trim()) {
+          isValid = false;
+          field.style.border = '1px solid red'; // Highlight the invalid field
+      } else {
+          field.style.border = ''; // Remove any previous highlighting
+      }
+  });
+
+  // If the form is not valid, show an error and stop
+  if (!isValid) {
+      Swal.fire({
+          title: "خطا در اطلاعات وارد شده!",
+          text: 'لطفا فیلدهای ضروری را پر کنید.',
+          icon: 'error',
+          confirmButtonText: "باشه"
+      });
+      return; // Stop the execution
+  }
+
+    Swal.fire({
+      title: "آیا از صحت اطلاعات وارد شده اطمینان دارید؟",
+      text: 'بعد از تایید امکان ویرایش وجود نخواهد داشت!', 
+      showCancelButton: true,
+      confirmButtonText: "ذخیره",
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: "لغو",
+      reverseButtons: true
+   
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById('profileForm').submit();
+    }
+    });
+  }
+  )
+</script>
+<script>
+
+  
+
+  
+  document.addEventListener('DOMContentLoaded', function () {
+      const preloadedReturnPeriods = {{ return_periods|safe }};
+
+      const loanTypeSelect = document.getElementById('loan-type-select');
+      const returnPeriodSelect = document.getElementById('return-period-select');
+  
+      loanTypeSelect.addEventListener('click', function () {
+          const loanTypeId = loanTypeSelect.value;
+  
+              // Reset the dropdown
+              returnPeriodSelect.innerHTML = '<option value="">لطفاً یک گزینه انتخاب کنید</option>';
+  
+          // Filter and populate return periods for the selected loan type
+          const filteredPeriods = preloadedReturnPeriods.filter(
+              period => period.loan_type_id == loanTypeId
+          );
+  
+          filteredPeriods.forEach(period => {
+              const newOption = document.createElement('option');
+              newOption.value = period.id; // Backend expects this ID
+              newOption.textContent = `${period.months} ماه`; // User sees this label
+              returnPeriodSelect.appendChild(newOption);
+            
+          });
+      });
+  });
+  
+ 
+  
+</script>
+{% endblock content %}
+{% block extra_js %}
+<script src="{% static 'js/fetch_city.js' %}"></script>
+{% endblock extra_js %}

@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}پروفایل{% endblock title %}
+
+
+{% block content %}
+<main class="main">
+  {% include "partials/_new_header.html" %}
+
+  <!-- Breadcrumb Start -->
+  {% include "partials/_breadcrumb.html" %}
+  <!-- Breadcrumb End -->
+
+  <!-- Dashboard Start -->
+  <section class="user-dashboard">
+    <div class="container-lg">
+      <div class="row g-3 g-xl-4 tab-wrap">
+   
+
+        <div class="col-12">
+          <div class="right-content tab-content" id="myTabContent">
+            <!-- Profile Tabs Start -->
+
+            <div class="btn-style2 bg-theme-orange2 border-dark w-50">
+              <h3>پروفایل</h3>
+            </div>
+            <div class="profile mt-5 pt-2">
+              {% include 'partials/_alerts.html' %}
+
+              <form enctype="multipart/form-data"  method="post" class="custom-form form-pill" id="imageUploadForm">
+                {% csrf_token %}
+                <div class="row g-3 g-xl-4">
+                  <div class="col-12">
+                    <div class="input-box">
+                      <label for="fullname">تصویر کارت ملی</label>
+                      {{ form.cart_meli }}
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="input-box">
+                      <label for="fullname">تصویر شناسنامه</label>
+                      {{ form.shenas_name }}
+                    </div>
+                  </div>
+
+                
+
+                  <div class=" col-sm-8">
+                    <p> <i class="bi bi-exclamation-diamond-fill text-danger"></i>
+                      فرمت عکس باید به یکی از حالت های زیر باشد:
+                    </p>
+                    <p> <i class="bi bi-exclamation-diamond-fill text-danger"></i>
+                     PNG-JPG-JPEG
+                    </p>
+                    <p>
+                       <i class="bi bi-exclamation-diamond-fill text-danger"></i>
+                      حجم تصاویر باید کمتر از 1 مگابایت باشد
+                      </p>
+                
+                  </div>
+
+                </div>
+
+                <div class="btn-box">
+                  <button  class="btn-solid btn btn-primary px-3 btn-lg" id="save">ذخیره </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Profile Tabs End -->
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Dashboard End -->
+</main>
+
+
+
+<script>
+    document.getElementById('imageUploadForm').addEventListener('submit', function(event) {
+        const image1 = document.getElementById('id_cart_meli').files[0];
+        const image2 = document.getElementById('id_shenas_name').files[0];
+        const maxSize = 1 * 1024 * 1024; // 1 MB in bytes
+        const validFormats = ['image/jpeg', 'image/png']; // Acceptable MIME types
+
+        // Validation function
+        function validateImage(image, label) {
+            if (!image) return false;
+
+            // Check file size
+            if (image.size > maxSize) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Size',
+                    text: `${label} exceeds the size limit of 1 MB.`,
+                });
+                return false;
+            }
+
+            // Check file format
+            if (!validFormats.includes(image.type)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Format',
+                    text: `${label} must be in PNG or JPG format.`,
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+        // Validate Image 1
+        if (!validateImage(image1, "Image 1")) {
+            event.preventDefault(); // Prevent form submission
+            return;
+        }
+
+        // Validate Image 2
+        if (!validateImage(image2, "Image 2")) {
+            event.preventDefault(); // Prevent form submission
+            return;
+        }
+
+        // All validations passed
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Both images are valid and meet the requirements!',
+        });
+    });
+</script>
+{% endblock content %}

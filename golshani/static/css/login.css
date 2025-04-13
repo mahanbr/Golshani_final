@@ -1,0 +1,170 @@
+        html {
+          --main-color: #2c2ccc;
+          --main-color-hover: #2323a2;
+          --body-background: #f5f5f5;
+          --text-color: #333;
+          --box-bg-color: #fff;
+          --box-shadow-color: #333333;
+          --menu-active-bg: #f3f3ff;
+          --menu-active-border-color: var(--main-color);
+          --menu-badge-bg: #ff9f43;
+          --line-color: var(--body-background);
+          --scroll-bar-bg: var(--box-bg-color);
+          --scroll-bar-color: #ccc;
+          --success-color: #28c76f;
+          --danger-color: #ea5455;
+          --warning-color: #ff9f43;
+          --border-color: #ced4da;
+          --disable-text-color: #707070;
+        }
+
+        html.dark {
+          --main-color: #675ad0;
+          --main-color-hover: #877be6;
+          --body-background: #121212;
+          --box-bg-color: #1d1d1d;
+          --text-color: #e1e1e1;
+          --box-shadow-color: #0a0a0a;
+          --menu-active-bg: #3c3c3c;
+          --scroll-bar-bg: var(--box-bg-color);
+          --scroll-bar-color: #000;
+          --border-color: #707070;
+        }
+
+        ::selection {
+          color: #fff;
+          background-color: var(--main-color);
+        }
+
+        ::-moz-selection {
+          color: #fff;
+          background-color: var(--main-color);
+        }
+
+        .login-container * {
+          outline: none;
+          box-sizing: border-box;
+        }
+
+
+
+
+        .login-container {
+          overflow: hidden;
+          flex-direction: column;
+        }
+
+        @media (min-width: 576px) {
+          .login-container {
+            flex-direction: row;
+          }
+        }
+
+        .login-container .image-wapper,
+        .login-container .form-wapper {
+          flex: 0 1 100%;
+          max-width: 100%;
+          padding: 50px 30px;
+        }
+
+        @media (min-width: 576px) {
+
+          .login-container .image-wapper,
+          .login-container .form-wapper {
+            flex: 0 1 50%;
+            max-width: 50%;
+          }
+        }
+
+        .login-container .image-wapper {
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          position: relative;
+        }
+
+        .login-container .image-wapper::before {
+          content: "";
+          display: block;
+          position: absolute;
+          inset: 0;
+          background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+        }
+
+        .login-container .image-wapper h1 {
+          align-self: flex-end;
+          font-size: 60px;
+          color: #fff;
+          z-index: 1;
+          margin: 0;
+        }
+
+        .login-container .form-wapper .form-header,
+        .login-container .form-wapper .form-body {
+          margin-bottom: 30px;
+        }
+
+        .login-container .form-wapper .form-header h2 {
+          font-size: 30px;
+          margin: 0;
+        }
+
+        .login-container .form-wapper .form-header p {
+          font-size: 14px;
+          color: #bbb;
+          margin: 20px 0 0;
+        }
+
+        .input-wrapper {
+          margin-bottom: 20px;
+          position: relative;
+        }
+
+        .input-wrapper>label {
+          display: block;
+          margin-bottom: 10px;
+          font-size: 14px;
+        }
+
+        .input-wrapper>input {
+          display: block;
+          width: 100%;
+          height: 39px;
+          padding: 0 10px;
+          border-radius: 5px;
+          border: 1px solid #707070;
+          color: var(--text-color);
+          background-color: transparent;
+        }
+
+        .input-wrapper .icon {
+          position: absolute;
+          bottom: 10px;
+          left: 10px;
+          font-size: 18px;
+          line-height: 0.8;
+          color: #6b6b6b;
+          z-index: 2;
+          cursor: pointer;
+        }
+
+        .submit-btn {
+          width: 100%;
+          padding: 10px 1rem;
+          background-color: var(--main-color) !important;
+          border: unset;
+          border-radius: 5px;
+          color: #fff !important;
+          font-size: 1rem !important;
+          cursor: pointer;
+          text-align: center !important;
+        }
+
+        .submit-btn:hover {
+          background-color: var(--main-color-hover);
+        }
+
+        .login-container .form-wapper .form-footer p {
+          font-size: 14px;
+          margin: 0;
+        }

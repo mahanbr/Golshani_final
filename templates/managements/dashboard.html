@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}مدیریت{% endblock title %}
+
+{% load humanize %}
+{% block content %}
+<main class="main">
+
+
+    <!-- Breadcrumb Start -->
+    {% include "partials/_breadcrumb.html" %}
+    <!-- Breadcrumb End -->
+
+    <!-- Dashboard Start -->
+    <section class="user-dashboard">
+        <div class="container-lg">
+            <div class="row g-3 g-xl-4 tab-wrap">
+     
+
+                <div class="col-12">
+                    <div class="right-content tab-content" id="myTabContent">
+                        <!-- User Dashboard Start -->
+                            <div class="dashboard-tab">
+                                <div class="title-box3">
+                                    <h3>{{request.user.first_name}} عزیز، خوش اومدی</h3>
+                                </div>
+
+                                <div class="row g-0 option-wrap">
+     
+          
+
+                                    <div class="col-sm-6 col-xl-3">
+                                        <a href="{% url 'unapproved_users' %}" class="tab-box">
+                                            <span><i class="bi bi-file-earmark-person fs-3"></i></span>
+
+                                            <h5>تایید نشده ها</h5>
+                                            <p>تایید مدارک کاربران</p>
+                                            {% if unapproved_users %}
+                                            <p class="text-danger fw-bold">{{unapproved_users}} کاربر تایید نشده</p>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+
+            
+  
+ 
+
+
+                                    <div class="col-sm-6 col-xl-3">
+                                        <a href="{% url 'review_payments' %}" class="tab-box">
+                                            <span>
+                                                <i class="bi bi-coin fs-3"></i>
+                                            </span>
+                                            <h5>پرداخت ها</h5>
+                                            {% if payments %}
+                                            <p>{{payments}} گزارش ثبت شده است.</p>
+                                            {%else%}
+                                            <p>گزارشی ثبت نشده است.</p>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-6 col-xl-3">
+                                        <a href="{% url 'review_messages' %}" class="tab-box">
+                                            <span>
+                                                <i class="bi bi-chat-right-text-fill fs-3"></i>
+                                            </span>
+                                            <h5>پیام ها</h5>
+                                            {% if unreads %}
+                                                <p class="text-danger fw-bold"> {{unreads}} پیام خوانده نشده دارید!</p>
+                                                {%else%}
+                                                <p>پیام جدیدی ندارید.</p>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                    
+                                    
+                                    <div class="col-sm-6 col-xl-3 border-bottom border-end-0 border-start">
+                                        <a href="{% url 'review_users' %}" class="tab-box">
+                                            <span><i class="bi bi-people-fill fs-3"></i></span>
+                                            <h5>کاربران</h5>
+                                                <p class="fw-bold text-dark">{{total_users}} کاربر عضو شده اند.</p>
+                                        </a>
+                                    </div>
+                            
+                     
+
+ 
+                                </div>
+                            </div>
+                      
+                        <!-- User Dashboard End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Dashboard End -->
+</main>
+{% endblock content %}

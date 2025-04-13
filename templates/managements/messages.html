@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}مدیریت{% endblock title %}
+
+{% block content %}
+<main class="main">
+    <!-- Breadcrumb Start -->
+    {% include "partials/_breadcrumb.html" %}
+    <!-- Breadcrumb End -->
+
+    <!-- Dashboard Start -->
+    <section class="user-dashboard">
+        <div class="container-fluid">
+            <div class="row g-3 g-xl-4 tab-wrap">
+
+
+                <div class="col-lg-8 mx-auto">
+                    <div class="right-content tab-content" id="myTabContent">
+          
+                      <div class="btn-style2 bg-theme-orange2 border-dark w-50">
+                        <h3>پیام کاربران</h3>
+                    </div>
+           
+                        <div class="table-responsive mt-3 ">
+                          <table class="table table-bordered table-striped text-center ">
+                            <thead>
+                                <tr>
+                           
+                                  <th scope="col">نام </th>
+                                  <th scope="col">شماره تماس</th>
+                                  <th scope="col">موضوع</th>
+                                  <th scope="col">پیام</th>
+                                  <th scope="col">تاریخ</th>
+                                  <th scope="col">ساعت</th>
+                                  <th scope="col">مشاهده شد</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {% for message in messages %}
+                                    <tr>
+                                      <td>{{message.full_name}}</td>
+                                      <td>{{message.phone_number}}</td>
+                                      <td>{{message.subject}}</td>
+                                      <td>{{message.user_message}}</td>
+                                      <td class="pdate">{{message.send_date|date:"m/d/Y"}}</td>
+                                      <td>{{message.send_date|date:"H:i:s"}}</td>
+                                      {% if message.seen %}
+                                      <td><div class="p-1 btn btn-success rounded rounded-circle"></div></td>
+                                      {%else%}
+                                      <td>
+                                          <button name="msg_id" class="btn btn-outline-primary" value="{{message.id}}">تایید</button>
+                                      </td> 
+                                      {%endif%}
+                                </tr>
+                                {% endfor %}
+                            </form>
+                            </tbody>
+                          </table>
+                        </div>
+                
+          
+          
+          
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </section>
+    <!-- Dashboard End -->
+</main>
+{% endblock content %}

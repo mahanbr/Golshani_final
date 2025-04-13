@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}داشبورد{% endblock title %}
+
+{% block content %}
+<main class="main">
+
+
+    <!-- Breadcrumb Start -->
+    {% include "partials/_breadcrumb.html" %}
+    <!-- Breadcrumb End -->
+
+    <!-- Dashboard Start -->
+    <section class="user-dashboard">
+        <div class="container-lg">
+            <div class="row g-3 g-xl-4 tab-wrap">
+               
+
+                <div class="col-12">
+                    {% include "partials/_alerts.html" %}
+
+                    <div class="right-content tab-content" id="myTabContent">
+                        <!-- User Dashboard Start -->
+                        <div class="dashboard-tab">
+                            <div class="title-box3">
+                                <h3>{{request.user.first_name}} عزیز، خوش اومدی</h3>
+                                <p>
+                                    شما در مرحله ی <span
+                                        class="fw-bold text-primary">{{request.user.account.get_status_display}}</span>
+                                    هستید
+                                </p>
+                            </div>
+
+                            <div class="row g-0 option-wrap">
+                                <div class="col-sm-6 col-xl-4">
+                                    {% if request.user.account.status == 'pending_user' %}
+                                    <a href="{% url 'profile' %}" class="tab-box text-danger">
+                                        {% else %}
+                                        <a href="{% url 'profile' %}" class="tab-box text-success">
+                                            {% endif %}
+
+                                            <span>
+                                                <i class="bi bi-person-circle  fs-1"></i>
+                                            </span>
+                                            <h5>تکمیل اطلاعات</h5>
+                                            <p>
+                                                {% if request.user.account.status == 'pending_user' %}
+                                                در انتظار کاربر
+                                                {% else %}
+                                                تکمیل شده
+                                                {% endif %}
+                                            </p>
+                                        </a>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4">
+                                    {% if request.user.account.status == 'upload_documents' or request.user.account.status == 'pending_user' %}
+                                    <a href="{% url 'upload_doc' %}" class="tab-box text-danger">
+                                        {% else %}
+                                        <a href="{% url 'upload_doc' %}" class="tab-box text-success">
+                                            {% endif %}
+                                            <i class="bi bi-file-earmark-arrow-up  fs-1"></i>
+                                            <h5>بارگذاری مدارک</h5>
+                                            <p>
+                                                {% if request.user.account.status == 'upload_documents' or request.user.account.status == 'pending_user' %}
+                                                در انتظار کاربر
+                                                {% else %}
+                                                تکمیل شده
+                                                {% endif %}
+
+                                            </p>
+                                        </a>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+                                    {% if request.user.account.status == 'pay_fee' or request.user.account.status == 'pending_user' or  request.user.account.status == 'upload_documents' %}
+                                    <a href="{% url 'pay_review' %}" class="tab-box text-danger">
+                                        {% else %}
+                                        <a href="{% url 'pay_review' %}" class="tab-box text-success">
+                                            {% endif %}
+
+                                            <i class="bi bi-credit-card fs-1"></i>
+                                            <h5>پرداخت فیش</h5>
+                                            {% if request.user.account.status == 'pay_fee' or request.user.account.status == 'pending_user' or  request.user.account.status == 'upload_documents' %}
+                                            در انتظار کاربر
+                                            {% else %}
+                                            تکمیل شده
+                                            {% endif %}
+
+                                        </a>
+                                </div>
+
+
+
+                                <div class="col-sm-6 col-xl-4">
+                                    {% if request.user.account.status == 'under_review' %}
+                                    <a href="#" class="tab-box text-primary">
+                                        {% elif request.user.account.status == 'approved'  %}
+                                        <a href="#" class="tab-box text-success">
+                                            {% elif request.user.account.status == 'rejected'  %}
+                                            <a href="#" class="tab-box text-danger">
+                                                {%else%}
+                                                <a href="#" class="tab-box text-black-50 ">
+                                    {% endif %}
+
+
+                                        <i class="bi bi-hourglass-split fs-1"></i>
+                                        <h5>درخواست وام</h5>
+                                        
+                                        <p class="fw-bolder fs-4">
+                                            {% if request.user.account.status == 'under_review' %}
+                                            در حال بررسی توسط کارشناسان
+                                            {% elif request.user.account.status == 'approved'  %}
+                                            تایید شده
+                                            {% elif request.user.account.status == 'rejected'  %}
+                                            رد شده
+                                            
+                                            {% endif %}
+                                        </p>
+                                    </a>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+ 
+                                    {% if request.user.account.status == 'under_review' %}
+                                    <a href="#" class="tab-box text-black-50">
+                                        {% elif request.user.account.status == 'approved'  %}
+                                        <a href="#" class="tab-box text-primary">
+                                            {% elif request.user.account.status == 'rejected'  %}
+                                            <a href="#" class="tab-box text-danger">
+                                                {%else%}
+                                                <a href="#" class="tab-box text-black-50">
+                                    {% endif %}
+                                    
+                                        <i class="bi bi-person-walking  fs-1"></i>
+                                        <h5>مراجعه حضوری</h5>
+                           
+                                    </a>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+                                    <a href="#" class="tab-box text-black-50">
+                                        <i class="bi bi-check2-circle  fs-1"></i>
+                                        <h5>اتمام</h5>
+                                    </a>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <!-- User Dashboard End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Dashboard End -->
+
+
+</main>
+{% endblock content %}

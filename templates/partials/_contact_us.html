@@ -1,0 +1,111 @@
+<section id="contact" class="contact section light-background">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>تماس با ما</h2>
+      <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.
+      </p>
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row g-4 g-lg-5">
+        <div class="col-lg-5">
+          <div class="info-box" data-aos="fade-up" data-aos-delay="200">
+            <h3>اطلاعات تماس</h3>
+            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.
+            </p>
+
+            <div class="info-item" data-aos="fade-up" data-aos-delay="300">
+              <div class="icon-box">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+              <div class="content">
+                <h4>آدرس</h4>
+                <p>تهران، خیابان ولیعصر</p>
+                <p>خیابان اول، کوچه دوم</p>
+              </div>
+            </div>
+
+            <div class="info-item" data-aos="fade-up" data-aos-delay="400">
+              <div class="icon-box">
+                <i class="bi bi-telephone"></i>
+              </div>
+              <div class="content">
+                <h4>تلفن</h4>
+                <p>021-5577889910</p>
+                <p>021-5577889910</p>
+              </div>
+            </div>
+
+            <div class="info-item" data-aos="fade-up" data-aos-delay="500">
+              <div class="icon-box">
+                <i class="bi bi-envelope"></i>
+              </div>
+              <div class="content">
+                <h4>آدرس ایمیل</h4>
+                <p>info@example.com</p>
+                <p>contact@example.com</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="contact-form" data-aos="fade-up" data-aos-delay="300">
+            <h3>با ما در ارتباط باشید</h3>
+            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.
+            </p>
+
+
+
+            <form method="POST" action="{% url 'contact' %}" class="custom-form form-pill" id="contact_us"
+              data-aos="fade-up" data-aos-delay="200">
+              {% csrf_token %}
+              <div class="row gy-4">
+
+                <div class="col-md-6">
+
+                  <input name="full_name" id="id_full_name" type="text" class="form-control" placeholder="نام شما"
+                    required />
+                </div>
+
+                <div class="col-md-6 ">
+                  <input maxlength="11" name="phone_number" id="id_phone_number" type="text" class="form-control"
+                    placeholder="شماره تماس با فرمت 09" required />
+                </div>
+
+                <div class="col-12">
+                  <input name="subject" id="id_subject" type="text" class="form-control" placeholder="موضوع" required />
+                </div>
+
+                <div class="col-12">
+                  <textarea name="user_message" class="form-control" id="id_user_message" cols="30" rows="6"
+                    placeholder="متن پیغام" required></textarea>
+
+                </div>
+
+                <div class="col-12 text-center">
+                  {% include "partials/_alerts.html" %}
+
+
+
+
+                  <button type="submit" class="g-recaptcha post-button btn "
+                    data-sitekey="6Lf9nPMqAAAAAI6OTVWp68MGkhE_HJaNC8IisG5B" data-callback="verifySubmit"
+                    data-action='submit'>ارسال <i class="arrow"></i></button>
+
+
+
+
+                </div>
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>

@@ -1,0 +1,21 @@
+{% if messages %}
+  {% for message in messages %}
+    <div id="message" class="container">
+      <div class="alert alert-{{ message.tags }}   text-center  fade show" >
+     
+        <strong>
+          {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            خطا: 
+          {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+             توجه:
+          {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <i class="fas fa-check-circle"></i>
+          {% else %}
+            {{ message.tags|title }}
+          {% endif %}
+        </strong>
+        {{ message }}
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}

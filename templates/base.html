@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}{% endblock %}">
+ 
+ 
+    <link rel="icon" type="image/png" sizes="16x16" href='{% static "img/logo/fav16.png" %}'>
+    <link rel="icon" type="image/png" sizes="32x32" href='{% static "img/logo/fav32.png" %}'>
+    <link rel="icon" type="image/png" sizes="48x48" href='{% static "img/logo/fav48.png" %}'>
+    <link rel="icon" type="image/png" sizes="192x192" href='{% static "img/logo/fav192.png" %}'>
+    <link rel="apple-touch-icon" type="image/png" sizes="167x167" href='{% static "img/logo/167.png" %}'>
+    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href='{% static "img/logo/180.png" %}'>
+
+ 
+
+    <!-- App -->
+    <script defer src="{% static "vendor/swal.js" %}"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
+
+    <link rel="preload stylesheet" href="{% static "vendor/datepicker/persian-datepicker.min.css" %}" />
+    <script src="{% static 'vendor/datepicker/persian-datepicker.min.js' %}"></script>
+
+
+    <!-- Vendor CSS Files -->
+    <link rel="preload stylesheet" href="{% static "vendor/bootstrap/bootstrap.rtl.css" %}" />
+    <link rel="preload stylesheet" href="{% static "vendor/bootstrap-icons/bootstrap-icons.css" %}" />
+    <link rel="preload stylesheet" href="{% static "vendor/aos/aos.css" %}" />
+    <link rel="preload stylesheet" href="{% static "vendor/glightbox/css/glightbox.min.css" %}" />
+    <link rel="preload stylesheet" href="{% static "vendor/swiper/swiper-bundle.min.css" %}" />
+    <!-- Main CSS File -->
+    <link rel="preload stylesheet" href="{% static 'css/new_theme.css' %}" />
+    <link rel="preload stylesheet" href="{% static 'css/new_theme_changes.css' %}" />
+
+
+
+    <title>نیکان | {% block title %}{% endblock %} </title>
+    <style>
+        @font-face {
+            font-family: farsi;
+            font-display: swap;
+            src: url("{% static 'fonts/IRANYekanX-Regular.woff2'%}");
+        }
+
+        @font-face {
+            font-family: farsi-bold;
+            src: url("{% static 'fonts/Estedad-ExtraBold.woff2'%}");
+        }
+
+        body {
+            font-family: farsi !important;
+        }
+    </style>
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+<body class="index-page">
+
+    <!-- Header -->
+    {% include "partials/_new_header.html" %}
+    <!-- Header ENd -->
+
+    {% block content %}
+    {% endblock %}
+
+    {% include "partials/_new_footer.html" %}
+
+
+
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+
+
+    <!-- Vendor JS Files -->
+    <script src="{% static "vendor/bootstrap/bootstrap.min.js" %}"></script>
+    <script src="{% static "vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "vendor/aos/aos.js" %}"></script>
+    <script src="{% static "vendor/swiper/swiper-bundle.min.js" %}"></script>
+    <script src="{% static "vendor/purecounter/purecounter_vanilla.js" %}"></script>
+
+
+
+
+ 
+    <!-- App -->
+
+    <!-- Main JS File -->
+    <script defer src="{% static 'js/new_theme.js' %}"></script>
+    {% comment %} <script defer src="{% static "vendor/swal.js" %}"></script> {% endcomment %}
+
+    <script>
+        jQuery.event.special.touchstart = {
+            setup: function (_, ns, handle) {
+                this.addEventListener("touchstart", handle, {
+                    passive: !ns.includes("noPreventDefault")
+                });
+            }
+        };
+        jQuery.event.special.touchmove = {
+            setup: function (_, ns, handle) {
+                this.addEventListener("touchmove", handle, {
+                    passive: !ns.includes("noPreventDefault")
+                });
+            }
+        };
+        jQuery.event.special.wheel = {
+            setup: function (_, ns, handle) {
+                this.addEventListener("wheel", handle, {
+                    passive: true
+                });
+            }
+        };
+        jQuery.event.special.mousewheel = {
+            setup: function (_, ns, handle) {
+                this.addEventListener("mousewheel", handle, {
+                    passive: true
+                });
+            }
+        };
+    </script>
+
+    {% block extra_js %}
+    {% endblock %}
+</body>
+
+</html>

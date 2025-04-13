@@ -1,0 +1,50 @@
+<header id="header" class="header d-flex align-items-center fixed-top">
+  <div
+    class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between"
+  >
+    <a
+      href="{% url 'index' %}"
+      class="logo d-flex align-items-center me-auto me-xl-0"
+    >
+      <!-- Uncomment the line below if you also wish to use an image logo -->
+      <!-- <img src="assets/img/logo.png" alt=""> -->
+      <h1 class="sitename">نیکان</h1>
+    </a>
+
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="{% url 'index' %}">خانه</a></li>
+        <li><a href="{% url 'index' %}#about">درباره ما</a></li>
+        <li><a href="{% url 'index' %}#features-cards">چرا نیکان؟</a></li>
+        <li><a href="{% url 'index' %}#clients">حامیان ما</a></li>
+        <li><a href="{% url 'index' %}#contact">تماس با ما</a></li>
+        {% if request.user.is_superuser %}
+        <li class="nav-item">
+            <a class="nav-link"
+                href="{% url 'manager_index' %}"><strong>مدیریت</strong></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'admin:index' %}"><strong>پنل
+                    ثبت</strong></a>
+        </li>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+        <li>
+          <form action="{% url 'signout' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn">خروج</button>
+            <span><i class="fas fa-external-link-alt"></i></span>
+          </form>
+        </li>
+        {% endif %}
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+
+    {% if request.user.is_authenticated %}
+    <a class="btn-getstarted" href="{% url 'dashboard' %}">داشبورد</a>
+    {%else%}
+    <a class="btn-getstarted" href="{% url 'signin' %}">ورود</a>
+    {% endif %}
+  </div>
+</header>

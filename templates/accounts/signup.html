@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}عضویت{% endblock title %}
+
+{% block extra_css%}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<script src="{% static 'js/jquery.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+{% include "partials/_new_header.html" %}
+
+    {% include "partials/_breadcrumb.html" %}
+
+<main class="main">
+
+
+
+    <!-- Starter Section Section -->
+    <section id="starter-section" class="starter-section section">
+
+        <!-- Section Title -->
+
+
+        <main class="col-lg-9 col-12 mx-auto p-lg-3 border-right mt-5">
+
+            <div class="login-container d-flex text-right glass-effect p-0 mt-3">
+                <div class="image-wapper d-flex"
+                    style="background-position: center; background-image: url({% static 'img/signup.jpeg' %});">
+                    <h1>عضویت</h1>
+                </div>
+                <div class="form-wapper">
+                    <div class="form-header">
+                        <h2>عضویت</h2>
+                        <h5>
+                            {% include 'partials/_alerts.html' %}
+                        </h5>
+                        <p>خوش اومدی! باعضویت میتونی از تمامی ویژگی های سایت استفاده کنی.</p>
+                    </div>
+
+
+                    <form method="POST" class="custom-form form-pill" action="{% url 'signup_verify' %}"
+                        id="login-form">
+                        {% csrf_token %}
+                        <div class="guide-text">
+                            <div class="input-wrapper">
+                                <label for="id_phone_number">شماره تماس</label>
+                                {{form.phone_number}}
+                            </div>
+                            <div class="row">
+                                <div class="input-wrapper col-6">
+                                    <label for="fname">نام</label>
+                                    <input id="fname" type="text" name="fname" />
+                                </div>
+                                <div class="input-wrapper col-6">
+                                    <label for="lname">نام خانوادگی</label>
+                                    <input id="lname" type="text" name="lname" />
+                                </div>
+
+                            </div>
+                            <div class="input-wrapper">
+                                <label for="id_password1">رمز عبور</label>
+                                {{form.password1}}
+                                <span class="icon password-control"><i class="bi bi-eye-fill showHidePassword"></i></span>
+                            </div>
+                            <div class="input-wrapper">
+                                <label for="id_password2">تکرار رمز</label>
+                                {{form.password2}}
+                                <span class="icon password-control"><i class="bi bi-eye-fill showHidePassword"></i></span>
+
+                            </div>
+
+                            <div>
+                                <p>
+                                    <span class="icon password-control"><i class="bi bi-exclamation-triangle-fill text-danger"></i></span>
+                                    رمز عبور شما می‌بایست حداقل از 8 حرف تشکیل شده باشد.
+                                </p>
+                                <p>
+                                    <span class="icon password-control"><i class="bi bi-exclamation-triangle-fill text-danger"></i></span>
+                                    گذرواژه شما نمی تواند یک گذرواژه معمول باشد.
+                                </p>
+                            </div>
+                        </div>
+
+                        <input value="دریافت کد" id="countdown" type="submit"
+                            class="g-recaptcha btn-submit p-3 mt-2 submit-btn"
+                            data-sitekey="6Lf9nPMqAAAAAI6OTVWp68MGkhE_HJaNC8IisG5B" data-callback="onSubmit"
+                            data-action='submit'>
+
+
+
+                        <div class="otp-confirm" style="display: none;">
+                            <div class="input-wrapper m-2 custom-form form-pill">
+                                <label for="user_code ">کد تایید</label>
+                                <input type="text" id="user_code" name="user_code" required
+                                    placeholder="کد ارسال شده به خط شما">
+                            </div>
+                            <div class="form-row mt-2">
+                                <div class="col-12">
+                                    <input value="ثبت" type="submit"
+                                        class="g-recaptcha btn btn-success rounded-pill w-100 text-center p-3 mt-2"
+                                        data-sitekey="6Lf9nPMqAAAAAI6OTVWp68MGkhE_HJaNC8IisG5B"
+                                        data-callback="verifySubmit" data-action='submit'>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="mt-3">
+                        <p>حساب دارید؟<a class="form-link" href="{% url 'signin' %}"> وارد شوید </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </main>
+
+    </section>
+    <!-- /Starter Section Section -->
+
+</main>
+
+
+
+
+{% endblock content %}
+{% block extra_js %}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="{% static 'js/signup.js' %}"></script>
+
+{% endblock extra_js %}
