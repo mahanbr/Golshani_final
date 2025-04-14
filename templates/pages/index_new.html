@@ -483,9 +483,10 @@
 
 
 
-                  <button type="submit" class="g-recaptcha post-button btn "
+                  <button type="submit" class=" post-button btn " data-callback="verifySubmit" >ارسال <i class="arrow"></i></button>
+                  {% comment %} <button type="submit" class="g-recaptcha post-button btn "
                     data-sitekey="6Lf9nPMqAAAAAI6OTVWp68MGkhE_HJaNC8IisG5B" data-callback="verifySubmit"
-                    data-action='submit'>ارسال <i class="arrow"></i></button>
+                    data-action='submit'>ارسال <i class="arrow"></i></button> {% endcomment %}
 
 
 
@@ -510,5 +511,5 @@
 {% endblock content %}
 {% block extra_js%}
 <script src="{% static 'js/blog_contact_us.js' %}"></script>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% comment %} <script src="https://www.google.com/recaptcha/api.js" async defer></script> {% endcomment %}
 {% endblock %}

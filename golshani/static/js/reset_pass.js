@@ -79,7 +79,7 @@ function onSubmit(token) {
             url: window.location.href,
             data: {
                 phone_number: document.getElementById('id_phone_number').value,
-                recaptcha: token
+                // recaptcha: token
             },
             success: function (data) {
                 document.querySelector('#countdown').style.cursor = 'auto'
@@ -92,7 +92,7 @@ function onSubmit(token) {
                         timer: 2000,
 
                     });
-                    document.querySelector('.phone-input').style.display = 'none'
+                    document.querySelector('#id_phone_number').style.display = 'none'
                     document.querySelector('.otp-confirm').style.display = 'block'
                     reverse_counter('countdown', 200)
 
@@ -132,7 +132,7 @@ function onSubmit(token) {
     }
 }
 
-
+document.getElementById('countdown').addEventListener('click', onSubmit);
 
 
 function reverse_counter(element, time) {

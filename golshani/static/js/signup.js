@@ -62,7 +62,10 @@ function verifySubmit(token) {
 const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
 
-function onSubmit(token) {
+
+// Without Recaptcha
+
+function onSubmit() {
 
 
 
@@ -86,7 +89,7 @@ function onSubmit(token) {
         phone_number: document.getElementById('id_phone_number').value,
         password1: document.getElementById('id_password1').value,
         password2: document.getElementById('id_password2').value,
-        recaptcha: token
+ 
       },
       success: function (data) {
         document.querySelector('#countdown').style.cursor = 'auto'
@@ -139,8 +142,8 @@ function onSubmit(token) {
 
   }
 }
-
-
+// Without Recaptcha
+document.getElementById('countdown').addEventListener('click', onSubmit);
 
 
 function reverse_counter(element, time) {

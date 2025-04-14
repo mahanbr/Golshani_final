@@ -44,14 +44,19 @@ class ContactView(FormView):
         if  'script' in form.cleaned_data['user_message']:
             messages.error(self.request, 'ای پی شما ثبت شد و در صورت تکرار برخورد قانونی صورت خواهد گرفت.')     
             return self.form_invalid(form)
-        recaptcha_response = self.request.POST.get("g-recaptcha-response")
-        if google_recaptcha(recaptcha_response):
-            form.save()
-            messages.success(self.request, "با موفقیت ثبت شد.")
-            return super().form_valid(form)
-        else:
-            messages.error(self.request, 'لطفا مجدد تلاش نمایید.')
-            return self.form_invalid(form)
+        #! RECAPTCHA 
+        # recaptcha_response = self.request.POST.get("g-recaptcha-response")
+        # if google_recaptcha(recaptcha_response):
+        #     form.save()
+        #     messages.success(self.request, "با موفقیت ثبت شد.")
+        #     return super().form_valid(form)
+        # else:
+        #     messages.error(self.request, 'لطفا مجدد تلاش نمایید.')
+        #     return self.form_invalid(form)
+        #! RECAPTCHA 
+        form.save()
+        return super().form_valid(form)
+
     def form_invalid(self, form):
         messages.error(self.request, form.errors.as_text())     
         return redirect(self.success_url + '#contact')

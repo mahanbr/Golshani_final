@@ -32,15 +32,16 @@ class SigninView(LoginView):
     success_url = 'dashboard'
 
     def form_valid(self, form):
-        recaptcha_response = self.request.POST.get("g-recaptcha-response")
-        if google_recaptcha(recaptcha_response):
-            auth.login(self.request, form.get_user())
-            return redirect("profile")
+        #! RECAPTCHA
+        # recaptcha_response = self.request.POST.get("g-recaptcha-response")
+        # if google_recaptcha(recaptcha_response):
+        # auth.login(self.request, form.get_user())
+        # return redirect("profile")
+        #! RECAPTCHA
+        auth.login(self.request, form.get_user())
+        return redirect("profile")
 
-        # return HttpResponseRedirect(self.get_success_url())
     def form_invalid(self, form):
-        print(form)
-        print(form.errors)
         messages.error(self.request, 'نام کاربری یا رمزعبور غلط می باشد.')
         return super().form_invalid(form)
 
@@ -51,13 +52,22 @@ def signup(request):
     if request.method == "POST" and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            recaptcha_response = request.POST.get("recaptcha")
-            if google_recaptcha(recaptcha_response):
-                send_code = create_otp(form.cleaned_data["phone_number"], 'Sharansignup') #! THIS HAS TO BE CHANGED
-                if send_code:
-                    data_code = 200
-                else:
-                    data_code = 500
+            #! RECAPTCHA
+            #     recaptcha_response = request.POST.get("recaptcha")
+            #     if google_recaptcha(recaptcha_response):
+            #         send_code = create_otp(form.cleaned_data["phone_number"], 'Sharansignup') #! THIS HAS TO BE CHANGED
+            #         if send_code:
+            #             data_code = 200
+            #         else:
+            #             data_code = 500
+            #     else:
+            #         data_code = 500
+            # else:
+            #     data_code = 409
+            #! RECAPTCHA
+            send_code = create_otp(form.cleaned_data["phone_number"], 'Sharansignup')
+            if send_code:
+                data_code = 200
             else:
                 data_code = 500
         else:
@@ -73,19 +83,30 @@ def signup_verify(request):
             phone_number = form.cleaned_data["phone_number"]
             user_code = request.POST.get('user_code')
             password = form.cleaned_data['password1']
-            recaptcha_response = request.POST.get("g-recaptcha-response")
-            if google_recaptcha(recaptcha_response):
-                if cache.ttl(phone_number) > 0:
-                    redis_code = int(cache.get(phone_number))
-                    if redis_code == int(user_code):
-                        cache.delete(phone_number)
-                        user = CustomUser.objects.create_user(phone_number=phone_number,
+            #! RECAPTCHA 
+            # recaptcha_response = request.POST.get("g-recaptcha-response")
+            # if google_recaptcha(recaptcha_response):
+            #     if cache.ttl(phone_number) > 0:
+            #         redis_code = int(cache.get(phone_number))
+            #         if redis_code == int(user_code):
+            #             cache.delete(phone_number)
+            #             user = CustomUser.objects.create_user(phone_number=phone_number,
+            #                                                   password=password,
+            #                                                   first_name=request.POST.get(
+            #                                                       'fname'),
+            #                                                   last_name=request.POST.get('lname'))
+            #! RECAPTCHA 
+            if cache.ttl(phone_number) > 0:
+                redis_code = int(cache.get(phone_number))
+                if redis_code == int(user_code):
+                    cache.delete(phone_number)
+                    user = CustomUser.objects.create_user(phone_number=phone_number,
                                                               password=password,
                                                               first_name=request.POST.get(
                                                                   'fname'),
                                                               last_name=request.POST.get('lname'))
-                        auth.login(request, user)
-                        return redirect("dashboard")
+                    auth.login(request, user)
+                    return redirect("dashboard")
     return redirect("signup")
 
 
@@ -173,17 +194,18 @@ class UploadDocView(FormView):
         account = Account.objects.get(user=self.request.user)
         if account.status != 'upload_documents':
             # messages.error(request, 'لطفا اول نسبت به تکمیل اطلاعات اقدام نمایید.')
-            return redirect('dashboard')            
+            return redirect('dashboard')
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-         
+
         cart_meli = form.cleaned_data.get('cart_meli')
         shenas_name = form.cleaned_data.get('shenas_name')
-        
+
         if cart_meli and shenas_name:
-            existing_document = UserDocument.objects.filter(user=self.request.user).first()
-            
+            existing_document = UserDocument.objects.filter(
+                user=self.request.user).first()
+
             if existing_document:
                 existing_document.cart_meli = cart_meli
                 existing_document.shenas_name = shenas_name
@@ -212,44 +234,78 @@ class SignoutView(LoginRequiredMixin, LogoutView):
 
 
 def reset_password(request):
-    if request.method == "POST" and request.is_ajax():
+    if request.method == "POST" and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         phone = request.POST.get('phone_number', None)
-        recaptcha_response = request.POST.get("recaptcha")
-        if google_recaptcha(recaptcha_response):
-            if phone != None:
-                acc = CustomUser.objects.filter(phone_number=phone)
-                if acc.count() == 1:
-                    send_code = create_otp(phone, 'Sharanreset') #! THIS HAS TO BE CHANGED
-                    if send_code:
-                        data_code = 200
-                    else:
-                        data_code = 500
+        #! RECAPTCHA 
+        # recaptcha_response = request.POST.get("recaptcha")
+        # if google_recaptcha(recaptcha_response):
+        #     if phone != None:
+        #         acc = CustomUser.objects.filter(phone_number=phone)
+        #         if acc.count() == 1:
+        #             # ! THIS HAS TO BE CHANGED
+        #             send_code = create_otp(phone, 'Sharanreset')
+        #             if send_code:
+        #                 data_code = 200
+        #             else:
+        #                 data_code = 500
+        #         else:
+        #             data_code = 409
+                # return HttpResponse(json.dumps({"status": data_code}), content_type="application/json")
+        #! RECAPTCHA 
+        if phone != None:
+            acc = CustomUser.objects.filter(phone_number=phone)
+            if acc.count() == 1:
+                # ! THIS HAS TO BE CHANGED
+                send_code = create_otp(phone, 'Sharanreset')
+                if send_code:
+                     data_code = 200
                 else:
-                    data_code = 409
-                return HttpResponse(json.dumps({"status": data_code}), content_type="application/json")
+                    data_code = 500
+            else:
+                data_code = 409
+            return HttpResponse(json.dumps({"status": data_code}), content_type="application/json")
+
+    
     return render(request, 'accounts/reset_password.html')
 
 
 def change_password(request):
     if request.method == "POST":
-        recaptcha_response = request.POST.get("g-recaptcha-response")
-        if google_recaptcha(recaptcha_response):
-            user_code = request.POST.get('user_code', None)
-            phone = request.POST.get('phone_number', None)
-            pass1 = request.POST.get('id_password1', None)
-            pass2 = request.POST.get('id_password2', None)
-            if pass1 != None:
-                if pass1 == pass2:
-                    if cache.ttl(phone) > 0:
-                        redis_code = int(cache.get(phone))
-                        if redis_code == int(user_code):
-                            cache.delete(phone)
-                            user = get_object_or_404(
-                                CustomUser, phone_number=phone)
-                            user.set_password(str(pass1))
-                            user.save()
-                            auth.login(request, user)
-                            return redirect("profile")
+        #! RECAPTCHA 
+        # recaptcha_response = request.POST.get("g-recaptcha-response")
+        # if google_recaptcha(recaptcha_response):
+        #     user_code = request.POST.get('user_code', None)
+        #     phone = request.POST.get('phone_number', None)
+        #     pass1 = request.POST.get('id_password1', None)
+        #     pass2 = request.POST.get('id_password2', None)
+        #     if pass1 != None:
+        #         if pass1 == pass2:
+        #             if cache.ttl(phone) > 0:
+        #                 redis_code = int(cache.get(phone))
+        #                 if redis_code == int(user_code):
+        #                     cache.delete(phone)
+        #                     user = get_object_or_404(
+        #                         CustomUser, phone_number=phone)
+        #                     user.set_password(str(pass1))
+        #                     user.save()
+        #                     auth.login(request, user)
+        #                     return redirect("profile")
+        #! RECAPTCHA 
+        user_code = request.POST.get('user_code', None)
+        phone = request.POST.get('phone_number', None)
+        pass1 = request.POST.get('id_password1', None)
+        pass2 = request.POST.get('id_password2', None)
+        if pass1 != None:
+            if pass1 == pass2:
+                if cache.ttl(phone) > 0:
+                    redis_code = int(cache.get(phone))
+                    if redis_code == int(user_code):
+                        cache.delete(phone)
+                        user = get_object_or_404(CustomUser, phone_number=phone)
+                        user.set_password(str(pass1))
+                        user.save()
+                        auth.login(request, user)
+                        return redirect("profile")
     return redirect("reset_password")
 
 
@@ -267,10 +323,11 @@ def city_list(request):
 
 class PayReviewView(LoginRequiredMixin, View):
     template_name = 'accounts/pay_review.html'
-    
+
     def dispatch(self, request, *args, **kwargs):
-        if  UserDocument.objects.filter(user=request.user, cart_meli__isnull=True, shenas_name__isnull=True).exists():
-            messages.error(request, 'لطفا اول نسبت به تکمیل اطلاعات اقدام نمایید.')
+        if UserDocument.objects.filter(user=request.user, cart_meli__isnull=True, shenas_name__isnull=True).exists():
+            messages.error(
+                request, 'لطفا اول نسبت به تکمیل اطلاعات اقدام نمایید.')
             return redirect('dashboard')
         return super().dispatch(request, *args, **kwargs)
 
@@ -353,8 +410,7 @@ def verify(request):
                     paid=True
                 )
                 record.save()
-                # two_tokens(selected_account.user.first_name , f'SG-{selected_account.fake_id}', selected_account.user.phone_number, 'SharanOrderConfirm')  #! THIS HAS TO BE CHANGED              
-                
+                # two_tokens(selected_account.user.first_name , f'SG-{selected_account.fake_id}', selected_account.user.phone_number, 'SharanOrderConfirm')  #! THIS HAS TO BE CHANGED
 
                 account = Account.objects.get(user=request.user)
                 account.status = 'under_review'

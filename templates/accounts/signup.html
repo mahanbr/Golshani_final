@@ -83,10 +83,13 @@
                             </div>
                         </div>
 
+                        <input value="دریافت کد" id="countdown" type="button"
+                            class=" btn-submit p-3 mt-2 submit-btn" >
+                    {% comment %} 
                         <input value="دریافت کد" id="countdown" type="submit"
                             class="g-recaptcha btn-submit p-3 mt-2 submit-btn"
                             data-sitekey="6Lf9nPMqAAAAAI6OTVWp68MGkhE_HJaNC8IisG5B" data-callback="onSubmit"
-                            data-action='submit'>
+                            data-action='submit'> {% endcomment %}
 
 
 
@@ -99,10 +102,12 @@
                             <div class="form-row mt-2">
                                 <div class="col-12">
                                     <input value="ثبت" type="submit"
+                                        class=" btn btn-success rounded-pill w-100 text-center p-3 mt-2" data-callback="verifySubmit" >
+                                    {% comment %} <input value="ثبت" type="submit"
                                         class="g-recaptcha btn btn-success rounded-pill w-100 text-center p-3 mt-2"
                                         data-sitekey="6Lf9nPMqAAAAAI6OTVWp68MGkhE_HJaNC8IisG5B"
-                                        data-callback="verifySubmit" data-action='submit'>
-                                    </a>
+                                        data-callback="verifySubmit" data-action='submit'> {% endcomment %}
+                                    
                                 </div>
                             </div>
                         </div>
@@ -127,7 +132,7 @@
 
 {% endblock content %}
 {% block extra_js %}
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% comment %} <script src="https://www.google.com/recaptcha/api.js" async defer></script> {% endcomment %}
 <script src="{% static 'js/signup.js' %}"></script>
 
 {% endblock extra_js %}
