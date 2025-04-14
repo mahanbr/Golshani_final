@@ -131,7 +131,7 @@ function onSubmit() {
         document.querySelector('#countdown').style.cursor = 'auto'
         Swal.fire({
           title: "هشدار",
-          text: "خطایی پیش آمده است لطفا مجدد تلاش نمایید.",
+          text: "خطایی پیش آمده لطفا مجدد تلاش نمایید.",
           icon: "question",
           showConfirmButton: false,
           timer: 2000,
