@@ -78,7 +78,7 @@ DATABASES = {
     'default': {
         'ENGINE': os.getenv('ENGINE'),
         'NAME': os.getenv('NAME'),
-        'USER': os.getenv('USER'),
+        'USER': 'golshani',
         'PASSWORD': os.getenv('PASSWORD'),
         'HOST': os.getenv('HOST')
     }
