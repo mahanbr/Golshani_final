@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}پروفایل{% endblock title %}
+
+{% block content %}
+<main class="main">
+  <!-- Breadcrumb Start -->
+  {% include "partials/_breadcrumb.html" %}
+  <!-- Breadcrumb End -->
+
+  <!-- Dashboard Start -->
+  <section class="user-dashboard">
+    <div class="container-lg">
+      <div class="row g-3 g-xl-4 tab-wrap">
+     
+
+        <div class="col-lg-8 mx-auto">
+          <div class="right-content tab-content" id="myTabContent">
+            <!-- Profile Tabs Start -->
+
+            <div class="btn-style2 bg-theme-orange2 border-dark w-50">
+              <h3>تکمیل وجه</h3>
+            </div>
+            <div class="profile mt-5 pt-2">
+              {% include 'partials/_alerts.html' %}
+                <div class="row">
+                    <div class="col-8 mx-auto bg-secondary bg-opacity-25 rounded p-3">
+                        <h4 class="text-success ">تبریک مدارک شما تایید گردیده است !</h4>
+                        <p class="p-1">لطفا جهت تکمیل روند اقدام به پرداخت فیش زیر نمایید. </p>
+                        <div class="btn-box">
+                            <a href="{% url 'pay_fee' %}" class="btn btn-success">
+                                پرداخت فیش
+                            </a>
+                        </div>
+                    </div>
+                </div>
+         
+            </div>
+
+            <!-- Profile Tabs End -->
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Dashboard End -->
+</main>
+
+
+
+{% endblock content %}

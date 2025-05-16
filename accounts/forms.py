@@ -2,7 +2,7 @@ from django import forms
 from .models import Account,UserDocument
 from PIL import Image
 from django.core.exceptions import ValidationError
-from managements.models import LoanType, ReturnPeriod
+
 
 class ProfileForm(forms.ModelForm):        
 

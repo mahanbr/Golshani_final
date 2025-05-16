@@ -31,18 +31,8 @@
                                             <th>پرداخت کننده</th>
                                             <td>{{payment.user.user.get_full_name}}</td>
                                         </tr>
-                                        <tr>
-                                            <th>وام درخواستی</th>
-                                            <td>
-                                                {{payment.user.loan_type|intcomma:False}}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>دوره بازپرداخت</th>
-                                            <td>
-                                                {{payment.user.return_period}} ماه
-                                            </td>
-                                        </tr>
+                    
+                                       
                                         <tr>
                                             <th>شناسه پرداخت</th>
                                             <td>{{payment.ref_id}}</td>
@@ -50,7 +40,7 @@
 
                                         <tr>
                                             <th>مبلغ</th>
-                                            <td>{{payment.amount|intcomma:False}} <span>نومان</span></td>
+                                            <td>{{payment.amount|intcomma:False}} <span>ریال</span></td>
                                         </tr>
 
                                         <tr>

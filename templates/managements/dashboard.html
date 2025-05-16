@@ -29,8 +29,8 @@
      
           
 
-                                    <div class="col-sm-6 col-xl-3">
-                                        <a href="{% url 'unapproved_users' %}" class="tab-box">
+                                    <div class="col-sm-6 col-xl-4">
+                                        <a href="{% url 'unapproved_users' %}" class="tab-box ">
                                             <span><i class="bi bi-file-earmark-person fs-3"></i></span>
 
                                             <h5>تایید نشده ها</h5>
@@ -46,8 +46,8 @@
  
 
 
-                                    <div class="col-sm-6 col-xl-3">
-                                        <a href="{% url 'review_payments' %}" class="tab-box">
+                                    <div class="col-sm-6 col-xl-4">
+                                        <a href="{% url 'review_payments' %}" class="tab-box ">
                                             <span>
                                                 <i class="bi bi-coin fs-3"></i>
                                             </span>
@@ -59,8 +59,8 @@
                                             {% endif %}
                                         </a>
                                     </div>
-                                    <div class="col-sm-6 col-xl-3">
-                                        <a href="{% url 'review_messages' %}" class="tab-box">
+                                    <div class="col-sm-6 col-xl-4">
+                                        <a href="{% url 'review_messages' %}" class="tab-box ">
                                             <span>
                                                 <i class="bi bi-chat-right-text-fill fs-3"></i>
                                             </span>
@@ -74,11 +74,27 @@
                                     </div>
                                     
                                     
-                                    <div class="col-sm-6 col-xl-3 border-bottom border-end-0 border-start">
-                                        <a href="{% url 'review_users' %}" class="tab-box">
+                                    <div class="col-sm-6 col-xl-4">
+                                        <a href="{% url 'filled_users' %}" class="tab-box ">
+                                            <span><i class="bi bi-bank fs-3"></i></span>
+                                            <h5>تکمیل وجه</h5>
+                                                <p class="fw-bold text-dark">{{filled}} کاربر تکمیل وجه کرده اند.</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="col-sm-6 col-xl-4">
+                                        <a href="{% url 'review_users' %}" class="tab-box ">
                                             <span><i class="bi bi-people-fill fs-3"></i></span>
                                             <h5>کاربران</h5>
                                                 <p class="fw-bold text-dark">{{total_users}} کاربر عضو شده اند.</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="col-sm-6 col-xl-4">
+                                        <a href="{% url 'admin:index' %}" class="tab-box ">
+                                            <span><i class="bi bi-people-fill fs-3"></i></span>
+                                            <h5>پنل ثبت</h5>
+                                                <p class=" text-dark">تعریف مدیر جدید و ...</p>
                                         </a>
                                     </div>
                             

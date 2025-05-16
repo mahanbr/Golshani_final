@@ -12,6 +12,7 @@ urlpatterns = [
     path('profile/', ProfileView.as_view(), name='profile'),
     path('document/', UploadDocView.as_view(), name='upload_doc'),
     path('pay-review/', PayReviewView.as_view(), name='pay_review'),
+    path('complete-payment/', CompletePaymentView.as_view(), name='complete_payment'),
     path('pay-fee/', PayFeeView.as_view(), name='pay_fee'),
     path('verify/', verify , name='verify'),
 	path('city-list/', city_list, name='city_list'), 

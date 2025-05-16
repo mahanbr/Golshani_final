@@ -4,7 +4,7 @@
   >
     <a
       href="{% url 'index' %}"
-      class="logo d-flex align-items-center me-auto me-xl-0"
+      class="logo d-flex align-items-center me-xl-0"
     >
       <!-- Uncomment the line below if you also wish to use an image logo -->
       <!-- <img src="assets/img/logo.png" alt=""> -->
@@ -13,11 +13,7 @@
 
     <nav id="navmenu" class="navmenu">
       <ul>
-        <li><a href="{% url 'index' %}">خانه</a></li>
-        <li><a href="{% url 'index' %}#about">درباره ما</a></li>
-        <li><a href="{% url 'index' %}#features-cards">چرا نیکان؟</a></li>
-        <li><a href="{% url 'index' %}#clients">حامیان ما</a></li>
-        <li><a href="{% url 'index' %}#contact">تماس با ما</a></li>
+ 
         {% if request.user.is_superuser %}
         <li class="nav-item">
             <a class="nav-link"
@@ -38,7 +34,7 @@
         </li>
         {% endif %}
       </ul>
-      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+     
     </nav>
 
     {% if request.user.is_authenticated %}

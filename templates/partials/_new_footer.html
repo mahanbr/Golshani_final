@@ -7,47 +7,36 @@
             <span class="sitename">نیکان</span>
           </a>
           <div class="footer-contact pt-3">
-            <p>تهران، خ اصلی</p>
-            <p>خیابان اول، کوچه دوم</p>
-            <p class="mt-3">
+            <p>{{manager_static_data.address}}</p>
+             <p class="mt-3">
               <strong>تلفن:</strong>
-               <span>551122333</span>
+               <a class="text-dark" href="tel:{{manager_static_data.phone}}">{{manager_static_data.phone}}</a> 
               </p>
             <p>
               <strong>ایمیل:</strong>
-              <span>info@example.com</span>
+              {% if  manager_static_data.email %}
+              
+              <a href="mailto: {{manager_static_data.email}}">{{manager_static_data.email}}</a>
+              {% endif %}
               </p>
           </div>
           <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-whatsapp"></i></a>
-            <a href=""><i class="bi bi-telegram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
+            <a href="https://x.com/{{manager_static_data.twitter}}"><i class="bi bi-twitter-x"></i></a>
+            <a href="https://wa.me/{{manager_static_data.whatsapp}}"><i class="bi bi-whatsapp"></i></a>
+            <a href="https://t.me/{{manager_static_data.telegram}}"><i class="bi bi-telegram"></i></a>
+            <a href="https://instagram.com/_u/{{manager_static_data.instagram}}/"><i class="bi bi-instagram"></i></a>
           </div>
         </div>
 
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>لینک های مفید</h4>
-          <ul>
-            <li><a href="{% url 'index' %}">خانه</a></li>
-            <li><a href="{% url 'index' %}#about">درباره ما</a></li>
-            <li><a href="{% url 'index' %}#features-cards">چرا نیکان؟</a></li>
-            <li><a href="{% url 'index' %}#clients">حامیان ما</a></li>
-            <li><a href="{% url 'index' %}#contact">تماس با ما</a></li>
-          </ul>
-        </div>
 
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>مجوز های ما</h4>
     
-        </div>
 
     
       </div>
     </div>
 
     <div class="container copyright text-center mt-4">
-      <p>  © تمامی حقوق این وبسایت متعلق به موسسه خیریه <strong class="px-1 sitename">نیکان</strong> می باشد.</p>
+      <p>  © تمامی حقوق این وبسایت متعلق به موسسه  <strong class="px-1 sitename">نیکان</strong> می باشد.</p>
     </div>
 
   </footer>

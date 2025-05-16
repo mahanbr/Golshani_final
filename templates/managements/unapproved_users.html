@@ -39,23 +39,18 @@
                                         <tr>
                                             <th>نام مشتری</th>
                                             <td> {{user.user.get_full_name}}</td>
-
-                                            <th>تاریخ درخواست وام</th>
-                                            <td>
-                                                <span class="pdate">{{user.application_date|date:"m/d/Y" }}</span>
-
-                                            </td>
+                                            <th>تاریخ تولد</th>
+                                            <td>{{user.jalali_birth}}</td>
 
                                             <th>شهر</th>
                                             <td>{{user.city}}</td>
                                         </tr>
                                         <tr>
                                             <th>جزئیات پرداخت ها</th>
-
                                             <td>
-                                         
+
                                                 <a href="{%url 'user_payment_check' pk=user.pk %}">بررسی </a>
-                                        
+
                                             </td>
 
                                             <th>استان</th>
@@ -80,62 +75,41 @@
                                         </tr>
 
                                         <tr>
+
+                                            <th>نام پدر</th>
+                                            <td>{{user.father_name}}</td>
+
                                             <th>ایمیل</th>
                                             <td>{{user.email}}</td>
 
                                             <th>کد پستی</th>
                                             <td>{{user.postal_code}}</td>
 
-                                            <th>آدرس</th>
-                                            <td>{{user.address}}</td>
+
                                         </tr>
                                         <tr>
                                             <th>کد ملی</th>
                                             <td>{{user.code_meli}}</td>
 
-                                            <th>نام پدر</th>
-                                            <td>{{user.father_name}}</td>
 
-                                            <th>تاریخ تولد</th>
-                                            <td>{{user.jalali_birth}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>مقدار تحصیلات</th>
-                                            <td colspan="3">{{user.loan_type|intcomma:False}} تومان</td>
-
-                                            <th>دوره بازپرداخت</th>
-                                            <td>{{user.return_period}} ماه</td>
-
-                                  
-                                
-                             
-                                  
+                                            <th>آدرس</th>
+                                            <td colspan=4>{{user.address}}</td>
                                         </tr>
 
                                         <tr>
 
                                             <th>آخرین وضعیت</th>
-                                            <td>{{user.get_status_display}}</td>
+                                            <td >در انتظار تایید مدارک</td>
 
-
-                                           
-                           
-                                     
-
-                                          
                                             <td colspan="2">
                                                 <button name="user_id" class="btn w-50  btn-primary"
                                                     value="accept-{{user.id}}">تایید</button>
                                             </td>
-                               
-                                 
+
                                             <td colspan="2">
                                                 <button name="user_id" class="btn w-50  btn-danger"
                                                     value="deny-{{user.id}}">رد</button>
                                             </td>
-                                     
-                           
-                                   
                                         </tr>
 
 
@@ -166,7 +140,7 @@
 
 
 
-                            
+
 
                                         {% endfor %}
                                     </form>

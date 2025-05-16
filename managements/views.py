@@ -22,6 +22,7 @@ class ManagerIndex(SuperUserRequiredMixin, TemplateView):
         context["total_users"] = Account.objects.all().count()
         context["payments"] = Payment.objects.all().count()
         context["unreads"] = ContactUs.objects.filter(seen=False).count()
+        context["filled"] = Account.objects.filter(status='approved').count()
         return context
  
  
@@ -54,6 +55,14 @@ class UnapprovedUsersView(SuperUserRequiredMixin, ListView):
     context_object_name = 'accounts'
     def get_queryset(self):
         return Account.objects.filter(status='under_review')
+
+
+class FilledUsersView(SuperUserRequiredMixin, ListView):
+    model = Account
+    template_name = "managements/filled_users.html"
+    context_object_name = 'accounts'
+    def get_queryset(self):
+        return Account.objects.filter(status='approved')
     
     
 class UserUpdateView(SuperUserRequiredMixin, View):
@@ -63,7 +72,7 @@ class UserUpdateView(SuperUserRequiredMixin, View):
             user_id = user_id.split('-') 
             selected_account = Account.objects.get(id=user_id[1])
             if user_id[0] == 'accept':
-                selected_account.status = 'approved'
+                selected_account.status = 'complete_payment'
                 # two_tokens(selected_account.user.first_name , f'SG-{selected_account.fake_id}', selected_account.user.phone_number, 'SharanOrderConfirm')  #! THIS HAS TO BE CHANGED              
             elif user_id[0] == 'deny':
                 # two_tokens(selected_account.user.first_name , f'SG-{selected_account.fake_id}', selected_account.user.phone_number, 'SharanOrderConfirm')                #! THIS HAS TO BE CHANGED
@@ -192,7 +201,8 @@ class ReviewUsers(SuperUserRequiredMixin, View):
             account_query = account_query.filter(user__first_name__icontains=phone)
         
         for account in account_query:
-            account.successful_payments = account.payments.filter(paid=True).exists()
+            account.successful_payments = len(account.payments.filter(paid=True))
+
 
         context = {
             'accounts' : account_query,

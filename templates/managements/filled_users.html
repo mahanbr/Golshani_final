@@ -56,11 +56,10 @@
                             <th scope="col">نام و نام خانوادگی</th>
                             <th scope="col">شماره تماس</th>
                             <th scope="col">پرداخت ها</th>
-                            <th scope="col">وام درخواستی</th>
-                            <th scope="col">دوره باز پرداخت</th>
                             <th scope="col">تاریخ عضویت</th>
-                            <th scope="col">مرحله عضویت</th>
-                            <th scope="col">پرداخت موفقیت آمیز</th>
+                            <th scope="col">تکمیل پرداخت</th>
+                      
+                           
         
                         </tr>
                     </thead>
@@ -76,18 +75,10 @@
                                 بررسی
                               </a>
                             </td>
-                            <td>{{account.loan_type|intcomma:False}} تومان</td>
-                            <td>{{account.return_period}} ماه</td>
+    
                             <td class="pdate">{{account.user.date_joined|date:"m/d/Y"}}</td>
-                            <td>{{account.get_status_display}}</td>
-                           
-                              {% if account.successful_payments == 2 %}
-                              <td class="text-success">پرداخت فیش و وام</td>
-                              {% elif account.successful_payments == 1 %}
-                              <td class="text-primary">پرداخت فیش </td>
-                              {% else %}
-                              <td class="text-danger">پرداخت ناموفق</td>
-                              {% endif %}
+                            <td class='text-success'>{{account.get_status_display}}</td>
+                            
                         </tr>
                         {% endfor %}
 

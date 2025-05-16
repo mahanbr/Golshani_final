@@ -1,5 +1,4 @@
 from django.db import models
-from managements.models import LoanType, ReturnPeriod
 from users.models import CustomUser
 from django.core.validators import validate_image_file_extension
 from django.utils.timezone import datetime, now
@@ -22,12 +21,13 @@ class Account(models.Model):
         ('pay_fee', 'پرداخت فیش'),
         ('under_review', 'بررسی مدارک'),
         ('rejected', 'رد شده'),
+        ('complete_payment', 'تکمیل وجه'),
         ('approved', 'تایید شده'),
     )
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     phone = models.CharField('تلفن ثابت', max_length=15, null=True)
     gender = models.CharField('جنسیت', max_length=6, choices=GENDER_CHOICES, blank=True)
-    chtype = models.CharField('شخصیت', max_length=10, choices=CHTYPE_CHOICES, blank=True) #! Add to form amd html
+    chtype = models.CharField('شخصیت', max_length=10, choices=CHTYPE_CHOICES, blank=True)
     email = models.EmailField('ایمیل', blank=True)
     province = models.CharField('استان', max_length=30)
     city = models.CharField('شهر', max_length=30)
@@ -37,13 +37,16 @@ class Account(models.Model):
     father_name = models.CharField(max_length=20, blank=True, null=True)
     jalali_birth = models.CharField(max_length=30)
     birthday = models.DateField(blank=True, null=True)    
-    loan_type = models.ForeignKey(LoanType, on_delete=models.PROTECT, related_name='loans', verbose_name='مقدار تحصیلات', null=True)
-    return_period = models.ForeignKey(ReturnPeriod, on_delete=models.PROTECT, related_name='loan_applications', verbose_name='دوره بازپرداخت', null=True)
-    application_date = models.DateTimeField('تاریخ درخواست', null=True, blank=True)
+
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending_user')
-    
-    def fee_required(self):
-        return int(self.loan_type.title /10)
+
+    @property
+    def amount(self):
+        if self.status == 'pay_fee':
+            x = 10000000
+        elif self.status == 'complete_payment':
+            x = 500000000
+        return x     
     
     class Meta:
         verbose_name = "درخواست وام"
@@ -56,9 +59,6 @@ class Account(models.Model):
 
     
     def save(self, *args, **kwargs):
-        if self.loan_type and not self.application_date:
-            self.application_date = now()
-
         self.birthday = format_date(self.jalali_birth)
         super().save(*args, **kwargs)
     
@@ -101,6 +101,10 @@ class UserDocument(models.Model):
 
 
 class Payment(models.Model):
+    PAYMENT_CHOICES = (
+        ("FEE", "فیش"),
+        ("COMPLETE", "تکمیل وجه"),
+    )
     user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="payments")
     amount = models.PositiveBigIntegerField(blank=True)
     date = models.DateTimeField(auto_now_add=True)
@@ -109,7 +113,15 @@ class Payment(models.Model):
     card_number = models.CharField(max_length= 32,default="****")
     status = models.IntegerField(default=0)
     paid = models.BooleanField(default=False)
-
+    
+    payment_type = models.CharField('علت پرداخت', max_length=10, choices=PAYMENT_CHOICES, blank=True, default='FEE')
+    
+    def save(self, *args, **kwargs):
+        if self.amount != '10000000':
+            self.payment_type = 'COMPLETE'
+        super().save(*args, **kwargs)
+        
+        
     class Meta:
         verbose_name = "پرداخت"
         verbose_name_plural = 'پرداخت ها'
@@ -117,10 +129,7 @@ class Payment(models.Model):
     @property
     def humanize_time(self):
         return datetime.fromtimestamp(float(self.date))     
-    
-    def __str__(self):
-        return f'رسید پرداخت {self.user.get_full_name()} به کارت {self.card_name}'
-    
+     
 
 
     def __str__(self):

@@ -50,7 +50,7 @@
 
                   <div class="col-sm-4">
                     <div class="input-box">
-                      <label for="id_code_meli">شماره ملی (دلخواه)</label>
+                      <label for="id_code_meli">کد ملی </label>
                       {{form.code_meli}}
                     </div>
                   </div>
@@ -128,30 +128,6 @@
                     <div class="input-box">
                       <label for="id_father_name">نام پدر</label>
                       {{form.father_name}}
-                    </div>
-                  </div>
-
-
-                  <div class="col-sm-4">
-                    <div class="input-box">
-                      <label for="loan-type-select">مبلغ وام</label>
-                      <select name="loan-type-select" id="loan-type-select" class="form-control form-select" required>
-                        <option value="0">-----------</option>
-                        {% for item in loan_types  %}
-                        {% for key, value in item.items  %}
-                        <option value="{{key}}" >
-                          {{value|intcomma:False}} تومان</option>
-                        {% endfor %}
-                        {% endfor %}
-                      </select>
-                    </div>
-                  </div>
-
-
-                  <div class="col-sm-4">
-                    <div class="input-box">
-                      <label for="return-period-select">دوره پرداخت</label>
-                      <select name="return-period-select" required id="return-period-select" class="form-control form-select"></select>
                     </div>
                   </div>
 
@@ -251,41 +227,7 @@
   }
   )
 </script>
-<script>
 
-  
-
-  
-  document.addEventListener('DOMContentLoaded', function () {
-      const preloadedReturnPeriods = {{ return_periods|safe }};
-
-      const loanTypeSelect = document.getElementById('loan-type-select');
-      const returnPeriodSelect = document.getElementById('return-period-select');
-  
-      loanTypeSelect.addEventListener('click', function () {
-          const loanTypeId = loanTypeSelect.value;
-  
-              // Reset the dropdown
-              returnPeriodSelect.innerHTML = '<option value="">لطفاً یک گزینه انتخاب کنید</option>';
-  
-          // Filter and populate return periods for the selected loan type
-          const filteredPeriods = preloadedReturnPeriods.filter(
-              period => period.loan_type_id == loanTypeId
-          );
-  
-          filteredPeriods.forEach(period => {
-              const newOption = document.createElement('option');
-              newOption.value = period.id; // Backend expects this ID
-              newOption.textContent = `${period.months} ماه`; // User sees this label
-              returnPeriodSelect.appendChild(newOption);
-            
-          });
-      });
-  });
-  
- 
-  
-</script>
 {% endblock content %}
 {% block extra_js %}
 <script src="{% static 'js/fetch_city.js' %}"></script>

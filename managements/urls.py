@@ -10,5 +10,6 @@ urlpatterns = [
 	path('user-payment/check/<int:pk>', UserPaymentCheckView.as_view(), name='user_payment_check'),
 	path('user-info/check/<int:pk>', UserInfoView.as_view(), name='user_info'),
 	path('unapproved-users',  UnapprovedUsersView.as_view(), name='unapproved_users'),
+	path('filled-users',  FilledUsersView.as_view(), name='filled_users'),
 	path('user-update',  UserUpdateView.as_view(), name='user_update'),
 ]

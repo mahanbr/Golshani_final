@@ -30,7 +30,7 @@
                                 <div class="col-sm-5">
                                     <div class="input-box">
                                         <label for="amount">مبلغ:</label>
-                                        <input type="number" id="amount" name="amount" class=" mr-sm-2 form-control" placeholder="مبلغ به تومان" value="{{ request.GET.amount }}">
+                                        <input type="number" id="amount" name="amount" class=" mr-sm-2 form-control" placeholder="مبلغ به ریال" value="{{ request.GET.amount }}">
                                     </div>
                                 </div>
                                 <div class="col-sm-5">
@@ -74,7 +74,7 @@
 
                                     <tr>
                                         <th colspan="4">مجموع دریافتی :</th>
-                                        <td colspan="4">{{total_amount|intcomma:False}} تومان</td>
+                                        <td colspan="4">{{total_amount|intcomma:False}} ریال</td>
                                     </tr>
 
                                     <tr>

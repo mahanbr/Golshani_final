@@ -3,7 +3,8 @@ from random import choice
 from django.conf import settings
 import math
 from django.core.cache import cache
-from kavenegar import *
+from ippanel import Client
+
 
 
 
@@ -22,62 +23,44 @@ def create_otp(user_phone, template):
     old_cache_time = cache.ttl(user_phone)
     if old_cache_time > 0:
         return False
-    phone = user_phone
     rand_num = generate_otp(4)
     cache.set(user_phone, rand_num, timeout=90)
     try:
-        api = KavenegarAPI(settings.KAVENEGAR)
-        params = {
-            'receptor': phone,
-            'template': template,
-            'token': rand_num,
-            'type': 'sms',
-        }
-        # print(rand_num)
-        response = api.verify_lookup(params)
+        sms = Client(settings.FARAZ)
+        pattern_values = {
+            "token": rand_num,
+            }
+        sms.send_pattern(template,"+9810001", user_phone, pattern_values,)
+        print(rand_num)
         return True
-    except APIException as e:
+    except Exception as e:
         print(e)
         return False
-    except HTTPException as e:
-        print(e)
-        return False
+
 
 
 def one_token(token, user_phone, template):
     try:
-        api = KavenegarAPI(settings.KAVENEGAR)
-        params = {
-            'receptor': user_phone,
-            'template': template,
-            'token': token,
-            'type': 'sms',
-        }
-        response = api.verify_lookup(params)
+        sms = Client(settings.FARAZ)
+        pattern_values = {
+            "token": token,
+            }
+        sms.send_pattern(template,"+9810001", user_phone, pattern_values,)
         return True
-    except APIException as e:
+    except Exception as e:
         print(e)
         return False
-    except HTTPException as e:
-        print(e)
-        return False
+
 
 def two_tokens(token, token2, user_phone, template):
     try:
-        api = KavenegarAPI(settings.KAVENEGAR)
-        params = {
-            'receptor': user_phone,
-            'template': template,
-            'token': token,
+        sms = Client(settings.FARAZ)
+        pattern_values = {
+            "token": token,
             'token2': token2,
-            'type': 'sms',
-        }
-        response = api.verify_lookup(params)
+            }
+        sms.send_pattern(template,"+9810001", user_phone, pattern_values,)
         return True
-    except APIException as e:
+    except Exception as e:
         print(e)
         return False
-    except HTTPException as e:
-        print(e)
-        return False
-

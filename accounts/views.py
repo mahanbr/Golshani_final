@@ -7,7 +7,6 @@ from django.views.generic import TemplateView
 from django.contrib import messages
 import requests
 from .models import Account, UserDocument, Payment
-from managements.models import LoanType, ReturnPeriod
 from users.forms import CustomUserCreationForm
 from users.models import CustomUser
 from .forms import ProfileForm, ImageUploadForm
@@ -32,14 +31,8 @@ class SigninView(LoginView):
     success_url = 'dashboard'
 
     def form_valid(self, form):
-        #! RECAPTCHA
-        # recaptcha_response = self.request.POST.get("g-recaptcha-response")
-        # if google_recaptcha(recaptcha_response):
-        # auth.login(self.request, form.get_user())
-        # return redirect("profile")
-        #! RECAPTCHA
         auth.login(self.request, form.get_user())
-        return redirect("profile")
+        return redirect("dashboard")
 
     def form_invalid(self, form):
         messages.error(self.request, 'نام کاربری یا رمزعبور غلط می باشد.')
@@ -52,20 +45,7 @@ def signup(request):
     if request.method == "POST" and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            #! RECAPTCHA
-            #     recaptcha_response = request.POST.get("recaptcha")
-            #     if google_recaptcha(recaptcha_response):
-            #         send_code = create_otp(form.cleaned_data["phone_number"], 'Sharansignup') #! THIS HAS TO BE CHANGED
-            #         if send_code:
-            #             data_code = 200
-            #         else:
-            #             data_code = 500
-            #     else:
-            #         data_code = 500
-            # else:
-            #     data_code = 409
-            #! RECAPTCHA
-            send_code = create_otp(form.cleaned_data["phone_number"], 'Sharansignup')
+            send_code = create_otp(form.cleaned_data["phone_number"], 'OTPSIGNUP')
             if send_code:
                 data_code = 200
             else:
@@ -83,19 +63,6 @@ def signup_verify(request):
             phone_number = form.cleaned_data["phone_number"]
             user_code = request.POST.get('user_code')
             password = form.cleaned_data['password1']
-            #! RECAPTCHA 
-            # recaptcha_response = request.POST.get("g-recaptcha-response")
-            # if google_recaptcha(recaptcha_response):
-            #     if cache.ttl(phone_number) > 0:
-            #         redis_code = int(cache.get(phone_number))
-            #         if redis_code == int(user_code):
-            #             cache.delete(phone_number)
-            #             user = CustomUser.objects.create_user(phone_number=phone_number,
-            #                                                   password=password,
-            #                                                   first_name=request.POST.get(
-            #                                                       'fname'),
-            #                                                   last_name=request.POST.get('lname'))
-            #! RECAPTCHA 
             if cache.ttl(phone_number) > 0:
                 redis_code = int(cache.get(phone_number))
                 if redis_code == int(user_code):
@@ -114,10 +81,12 @@ class ProfileView(LoginRequiredMixin, View):
     template_name = 'accounts/profile.html'
 
     def get(self, request, *args, **kwargs):
-        if Account.objects.filter(user=request.user, application_date__isnull=False).exists():
+        account = Account.objects.get(user=self.request.user)
+        
+        if account.status != 'pending_user':
+            messages.error(request, 'امکان ویرایش اطلاعات میسر نمی باشد')
             return redirect('dashboard')
 
-        account = Account.objects.get(user=self.request.user)
         form = ProfileForm(instance=account)
         select_city = None
         if account.province:
@@ -133,19 +102,12 @@ class ProfileView(LoginRequiredMixin, View):
             'provinces': province_choices,
             'cities': select_city,
             'form': form,
-            'loan_types': [{types.id: types.title} for types in LoanType.objects.filter(is_active=True)],
-            'return_periods': [
-                {'loan_type_id': period.loan_type.id,
-                    'id': period.id, 'months': period.months}
-                for period in ReturnPeriod.objects.all()]
         }
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         account = Account.objects.get(user=self.request.user)
         form = ProfileForm(request.POST, instance=account)
-        loan_type = request.POST.get('loan-type-select',)
-        return_period = request.POST.get('return-period-select',)
         province_id = request.POST.get('id_province', 'TN')
         city_id = request.POST.get('id_city',)
         try:
@@ -159,26 +121,23 @@ class ProfileView(LoginRequiredMixin, View):
                     for item in city_choice['cities']:
                         if item['id'] == int(city_id):
                             city = item['name']
-            loan_type = get_object_or_404(
-                LoanType, pk=int(loan_type), is_active=True)
-            return_period = get_object_or_404(
-                ReturnPeriod, pk=int(return_period), loan_type=loan_type)
         except Exception as e:
             print(e)
             messages.error(request, 'مقادیر وارد شده صحیح نمی باشند')
             return redirect('profile')
 
         if form.is_valid():
-
+            if Account.objects.filter(code_meli=form['code_meli'].value()).exists() == True:
+                messages.error(request, "کد ملی وارد شده تکراری یا دارای مقادیر صحیحی نمی باشد")
+                return redirect('profile')                
             new_form = form.save(commit=False)
             new_form.province = province
             new_form.city = city
-            new_form.loan_type = loan_type
-            new_form.return_period = return_period
             new_form.user = request.user
             new_form.status = 'upload_documents'
             new_form.save()
             messages.success(request, "با موفقیت ذخیره شد.")
+            return redirect('dashboard')
         else:
             messages.error(request, form.errors.as_text())
         return redirect('profile')
@@ -193,7 +152,7 @@ class UploadDocView(FormView):
     def dispatch(self, request, *args, **kwargs):
         account = Account.objects.get(user=self.request.user)
         if account.status != 'upload_documents':
-            # messages.error(request, 'لطفا اول نسبت به تکمیل اطلاعات اقدام نمایید.')
+            messages.error(request, 'لطفا اول نسبت به تکمیل اطلاعات اقدام نمایید.')
             return redirect('dashboard')
         return super().dispatch(request, *args, **kwargs)
 
@@ -236,27 +195,11 @@ class SignoutView(LoginRequiredMixin, LogoutView):
 def reset_password(request):
     if request.method == "POST" and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         phone = request.POST.get('phone_number', None)
-        #! RECAPTCHA 
-        # recaptcha_response = request.POST.get("recaptcha")
-        # if google_recaptcha(recaptcha_response):
-        #     if phone != None:
-        #         acc = CustomUser.objects.filter(phone_number=phone)
-        #         if acc.count() == 1:
-        #             # ! THIS HAS TO BE CHANGED
-        #             send_code = create_otp(phone, 'Sharanreset')
-        #             if send_code:
-        #                 data_code = 200
-        #             else:
-        #                 data_code = 500
-        #         else:
-        #             data_code = 409
-                # return HttpResponse(json.dumps({"status": data_code}), content_type="application/json")
-        #! RECAPTCHA 
         if phone != None:
             acc = CustomUser.objects.filter(phone_number=phone)
             if acc.count() == 1:
                 # ! THIS HAS TO BE CHANGED
-                send_code = create_otp(phone, 'Sharanreset')
+                send_code = create_otp(phone, 'OTPRESET')
                 if send_code:
                      data_code = 200
                 else:
@@ -271,26 +214,6 @@ def reset_password(request):
 
 def change_password(request):
     if request.method == "POST":
-        #! RECAPTCHA 
-        # recaptcha_response = request.POST.get("g-recaptcha-response")
-        # if google_recaptcha(recaptcha_response):
-        #     user_code = request.POST.get('user_code', None)
-        #     phone = request.POST.get('phone_number', None)
-        #     pass1 = request.POST.get('id_password1', None)
-        #     pass2 = request.POST.get('id_password2', None)
-        #     if pass1 != None:
-        #         if pass1 == pass2:
-        #             if cache.ttl(phone) > 0:
-        #                 redis_code = int(cache.get(phone))
-        #                 if redis_code == int(user_code):
-        #                     cache.delete(phone)
-        #                     user = get_object_or_404(
-        #                         CustomUser, phone_number=phone)
-        #                     user.set_password(str(pass1))
-        #                     user.save()
-        #                     auth.login(request, user)
-        #                     return redirect("profile")
-        #! RECAPTCHA 
         user_code = request.POST.get('user_code', None)
         phone = request.POST.get('phone_number', None)
         pass1 = request.POST.get('id_password1', None)
@@ -323,35 +246,46 @@ def city_list(request):
 
 class PayReviewView(LoginRequiredMixin, View):
     template_name = 'accounts/pay_review.html'
-
     def dispatch(self, request, *args, **kwargs):
-        if UserDocument.objects.filter(user=request.user, cart_meli__isnull=True, shenas_name__isnull=True).exists():
-            messages.error(
-                request, 'لطفا اول نسبت به تکمیل اطلاعات اقدام نمایید.')
+        account = Account.objects.get(user=self.request.user)
+        if account.status != 'pay_fee':
+            messages.error(request, 'لطفا اول نسبت به تکمیل اطلاعات اقدام نمایید.')
+            return redirect('dashboard')
+        if Payment.objects.filter(user=account, paid=True).exists():
+            messages.error(request, 'این تراکنش یکبار انجام شده است.')
             return redirect('dashboard')
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        user = self.request.user
-        if Payment.objects.filter(user=user.account, paid=True).exists():
+        return render(request, self.template_name)
+
+class CompletePaymentView(LoginRequiredMixin, View):
+    template_name = 'accounts/complete_payment.html'
+    def dispatch(self, request, *args, **kwargs):
+        account = Account.objects.get(user=self.request.user)
+        if account.status != 'complete_payment':
+            messages.error(request, 'لطفا اول نسبت به تکمیل اطلاعات اقدام نمایید.')
+            return redirect('dashboard')
+        if Payment.objects.filter(user=account, paid=True, payment_type='COMPLETE').exists():
             messages.error(request, 'این تراکنش یکبار انجام شده است.')
             return redirect('dashboard')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
 
 
 class PayFeeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        user = self.request.user
-        amount = user.account.fee_required()
+        amount = self.request.user.account.amount
         data = {
             "merchant_id": settings.MERCHANT,
-            "amount": amount*10,
-            "description": f'پرداخت مبلغ {amount} جهت بررسی درخواست وام',
+            "amount": amount,
+            "description": f'پرداخت فیش جهت بررسی درخواست وام',
             "metadata": {"mobile": self.request.user.phone_number},
             "callback_url": 'http://127.0.0.1:8080/account/verify/',
         }
         data = json.dumps(data)
-        # set content length by data
         headers = {'content-type': 'application/json',
                    'content-length': str(len(data))}
 
@@ -382,13 +316,13 @@ class PayFeeView(LoginRequiredMixin, View):
 @login_required
 def verify(request):
     if "Authority" and "Status" in request.GET:
+        amount = request.user.account.amount
 
         status = request.GET.get("Status")
         authority = request.GET.get("Authority")
-        amount = request.user.account.fee_required()
         data = {
             "merchant_id": settings.MERCHANT,
-            "amount": amount*10,
+            "amount": amount,
             "authority": authority,
         }
         data = json.dumps(data)
@@ -413,7 +347,11 @@ def verify(request):
                 # two_tokens(selected_account.user.first_name , f'SG-{selected_account.fake_id}', selected_account.user.phone_number, 'SharanOrderConfirm')  #! THIS HAS TO BE CHANGED
 
                 account = Account.objects.get(user=request.user)
-                account.status = 'under_review'
+                if amount == 10000000:
+                    account.status = 'under_review'
+                else:
+                    account.status = 'approved'
+                    
                 account.save()
             messages.success(request, 'پرداخت با موقیت انجام شد')
             return redirect('dashboard')

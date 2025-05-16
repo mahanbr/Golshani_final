@@ -62,6 +62,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Local context
+                'managements.context_processors.data',
 
             ],
         },
@@ -151,7 +153,7 @@ MESSAGE_TAGS = {
 }
 
 
-KAVENEGAR = os.getenv('KAVENEGAR')
+FARAZ = os.getenv('FARAZ')
 # GOOGLE_RECAPTCHA_SECRET_KEY = os.getenv('RECAPTCHA')
 
 
