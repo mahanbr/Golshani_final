@@ -30,11 +30,9 @@ def create_otp(user_phone, template):
         pattern_values = {
             "token": rand_num,
             }
-        sms.send_pattern(template,"+9810001", user_phone, pattern_values,)
-        print(rand_num)
+        sms.send_pattern(template,"+983000505", user_phone, pattern_values,)
         return True
     except Exception as e:
-        print(e)
         return False
 
 

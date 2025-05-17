@@ -44,8 +44,8 @@ def signup(request):
         return redirect("dashboard")
     if request.method == "POST" and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            send_code = create_otp(form.cleaned_data["phone_number"], 'OTPSIGNUP')
+        if form.is_valid():        
+            send_code = create_otp(form.cleaned_data["phone_number"], '2c3m1wrhl1uuqpz')
             if send_code:
                 data_code = 200
             else:
@@ -199,7 +199,7 @@ def reset_password(request):
             acc = CustomUser.objects.filter(phone_number=phone)
             if acc.count() == 1:
                 # ! THIS HAS TO BE CHANGED
-                send_code = create_otp(phone, 'OTPRESET')
+                send_code = create_otp(phone, '	9qp5h67rn9jerej')
                 if send_code:
                      data_code = 200
                 else:
