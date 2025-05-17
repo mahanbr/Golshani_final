@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -170,9 +170,6 @@ MERCHANT = os.getenv('MERCHANT')
 
 # Important: need to edit for realy server.
 
-ZP_API_REQUEST = f"https://sandbox.zarinpal.com/pg/v4/payment/request.json"
-ZP_API_VERIFY = f"https://sandbox.zarinpal.com/pg/v4/payment/verify.json"
-ZP_API_STARTPAY = f"https://sandbox.zarinpal.com/pg/StartPay/"
 
 
 # SESSION_COOKIE_SECURE = True
@@ -193,3 +190,41 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+
+ENVIRONMENT = os.getenv('DJANGO_ENV', 'local')  # default to 'local' if not set
+
+if ENVIRONMENT == 'production':
+    DEBUG = False
+    
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv('ENGINE'),
+            'NAME': os.getenv('NAME'),
+            'USER': 'golshani',
+            'PASSWORD': os.getenv('PASSWORD'),
+            'HOST': os.getenv('HOST')
+        }
+    }
+    ZP_API_REQUEST = f"https://api.zarinpal.com/pg/v4/payment/request.json"
+    ZP_API_VERIFY = f"https://api.zarinpal.com/pg/v4/payment/verify.json"
+    ZP_API_STARTPAY = f"https://www.zarinpal.com/pg/StartPay/"
+
+
+
+else:  # local
+    DEBUG = True
+
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv('ENGINE'),
+            'NAME': os.getenv('NAME'),
+            'USER': os.getenv('USER'),
+            'PASSWORD': os.getenv('PASSWORD'),
+            'HOST': os.getenv('HOST')
+        }
+    }
+
+    ZP_API_REQUEST = f"https://sandbox.zarinpal.com/pg/v4/payment/request.json"
+    ZP_API_VERIFY = f"https://sandbox.zarinpal.com/pg/v4/payment/verify.json"
+    ZP_API_STARTPAY = f"https://sandbox.zarinpal.com/pg/StartPay/"
