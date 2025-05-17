@@ -209,6 +209,7 @@ if ENVIRONMENT == 'production':
     ZP_API_REQUEST = f"https://api.zarinpal.com/pg/v4/payment/request.json"
     ZP_API_VERIFY = f"https://api.zarinpal.com/pg/v4/payment/verify.json"
     ZP_API_STARTPAY = f"https://www.zarinpal.com/pg/StartPay/"
+    CALLBACK_URL = 'http://127.0.0.1:8080/account/verify/'
 
 
 
@@ -228,3 +229,4 @@ else:  # local
     ZP_API_REQUEST = f"https://sandbox.zarinpal.com/pg/v4/payment/request.json"
     ZP_API_VERIFY = f"https://sandbox.zarinpal.com/pg/v4/payment/verify.json"
     ZP_API_STARTPAY = f"https://sandbox.zarinpal.com/pg/StartPay/"
+    CALLBACK_URL = 'http://127.0.0.1:8080/account/verify/'

@@ -117,7 +117,7 @@ class Payment(models.Model):
     payment_type = models.CharField('علت پرداخت', max_length=10, choices=PAYMENT_CHOICES, blank=True, default='FEE')
     
     def save(self, *args, **kwargs):
-        if self.amount != '10000000':
+        if self.amount != 10000000:
             self.payment_type = 'COMPLETE'
         super().save(*args, **kwargs)
         

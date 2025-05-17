@@ -251,7 +251,7 @@ class PayReviewView(LoginRequiredMixin, View):
         if account.status != 'pay_fee':
             messages.error(request, 'لطفا اول نسبت به تکمیل اطلاعات اقدام نمایید.')
             return redirect('dashboard')
-        if Payment.objects.filter(user=account, paid=True).exists():
+        if Payment.objects.filter(user=account, paid=True, payment_type='FEE').exists():
             messages.error(request, 'این تراکنش یکبار انجام شده است.')
             return redirect('dashboard')
         return super().dispatch(request, *args, **kwargs)
@@ -283,7 +283,7 @@ class PayFeeView(LoginRequiredMixin, View):
             "amount": amount,
             "description": f'پرداخت فیش جهت بررسی درخواست وام',
             "metadata": {"mobile": self.request.user.phone_number},
-            "callback_url": 'http://127.0.0.1:8080/account/verify/',
+            "callback_url": settings.CALLBACK_URL,
         }
         data = json.dumps(data)
         headers = {'content-type': 'application/json',
