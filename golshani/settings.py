@@ -179,3 +179,17 @@ ZP_API_STARTPAY = f"https://sandbox.zarinpal.com/pg/StartPay/"
 # CSRF_COOKIE_SECURE = True
 # SECURE_HSTS_SECONDS = 31536000  # 1 year
 # SECURE_SSL_REDIRECT = True
+
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}

@@ -4,6 +4,8 @@ from django.conf import settings
 import math
 from django.core.cache import cache
 from ippanel import Client
+import logging
+logger = logging.getLogger(__name__)
 
 
 
@@ -33,6 +35,7 @@ def create_otp(user_phone, template):
         sms.send_pattern(template,"+983000505", user_phone, pattern_values,)
         return True
     except Exception as e:
+        logger.debug(e)
         return False
 
 
@@ -46,7 +49,7 @@ def one_token(token, user_phone, template):
         sms.send_pattern(template,"+9810001", user_phone, pattern_values,)
         return True
     except Exception as e:
-        print(e)
+        logger.debug(e)
         return False
 
 
@@ -60,5 +63,5 @@ def two_tokens(token, token2, user_phone, template):
         sms.send_pattern(template,"+9810001", user_phone, pattern_values,)
         return True
     except Exception as e:
-        print(e)
+        logger.debug(e)
         return False
